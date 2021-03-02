@@ -10,6 +10,8 @@
 #include <string>
 #include <detours.h>
 
+#include "ModuleHook.h"
+
 #pragma comment(lib,"ws2_32.lib") //Winsock Library
 #pragma comment(lib,"ntdll.lib") //Winsock Library
 
@@ -75,7 +77,7 @@ public:
     void* sqlite;
     int execDML(const char* sql, int* error)
     {
-        logf("Call to execDM %x", (int)sql);
+        logf("Call to execDM %s", sql);
         int result;
         __asm {
             mov eax, error
@@ -92,7 +94,7 @@ public:
     }
     int execQueryEx(int a2, char *sql, int *a4, int a5)
     {
-        logf("Call to execQueryEx");
+        logf("Call to execQueryEx %s", sql);
         int result;
         __asm {
             mov eax, a5
@@ -111,8 +113,6 @@ public:
     }
 };
 
-
-
 DWORD WINAPI thread_func(LPVOID lpParam)
 {
     auto processName = Utils::GetProcessName(GetCurrentProcessId());
@@ -120,98 +120,16 @@ DWORD WINAPI thread_func(LPVOID lpParam)
     if(processName != TEXT("QQ.exe") && processName != TEXT("TIM.exe"))
         return 0;
 
-    
-
     logf("start hook");
 
-    auto hProcess = GetCurrentProcess();
-    if (NULL == hProcess)
-        return 1;
+    ModuleHook hook("KernelUtil.dll");
 
-    // Get a list of all the modules in this process.
+    hook.begin();
 
-    HMODULE hMods[1024];
-    DWORD count;
-    
-    if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &count))
-    {
-        for (size_t i = 0; i < (count / sizeof(HMODULE)); i++ )
-        {
-            TCHAR szModName[MAX_PATH];
+    auto fn = &HookSQLite3DB::execDML;
+    hook.hookFunc("?execDML@CppSQLite3DB@@QAEHPBDPAH@Z", (void**)&OriginalSQLite3DB_execDML, (void*&)fn);
 
-            // Get the full path to the module's file.
-
-            if ( GetModuleBaseName( hProcess, hMods[i], szModName,
-                                      sizeof(szModName) / sizeof(TCHAR)))
-            {
-                // Print the module name and handle value.
-
-                logf("%ls", szModName);
-            }
-        }
-    }
-    
-    // Release the handle to the process.
-
-    CloseHandle( hProcess );
-
-    auto module = GetModuleHandleA("KernelUtil.dll");
-    logf("KernelUtils: %p", module);
-    if(module == NULL)
-    {
-        log_error("Invalid HMODULE");
-        return 0;
-    }
-
-    auto execDML = GetProcAddress(module, "?execDML@CppSQLite3DB@@QAEHPBDPAH@Z");
-    logf("SQLite3DB::execDML: %p", execDML);
-    if(execDML == NULL)
-        return 0;
-
-    DetourTransactionBegin();
-    logf("Try hook SQLite3DB::execDML");
-    OriginalSQLite3DB_execDML = (decltype(SQLite3DB_execDML)*)execDML;
-    auto t = &HookSQLite3DB::execDML;
-    void* ptr = (void*&)t;
-    auto err = DetourAttach((PVOID*)&OriginalSQLite3DB_execDML, ptr);
-    if(err != NO_ERROR)
-    {
-        logf("Failed to detour");
-        switch(err)
-        {
-            case ERROR_INVALID_BLOCK:
-                logf("ERROR_INVALID_BLOCK");
-                break;
-            case ERROR_INVALID_HANDLE:
-                logf("ERROR_INVALID_HANDLE");
-                break;
-            case ERROR_INVALID_OPERATION:
-                logf("ERROR_INVALID_OPERATION");
-                break;
-            case ERROR_NOT_ENOUGH_MEMORY:
-                logf("ERROR_NOT_ENOUGH_MEMORY");
-                break;
-            default:
-                logf("Unknown error: %d", err);
-        }
-    }
-    err = DetourTransactionCommit();
-    if(err != NO_ERROR)
-    {
-        logf("Failed to commit detour");
-        switch(err)
-        {
-            case ERROR_INVALID_DATA:
-                logf("ERROR_INVALID_DATA");
-                break;
-            case ERROR_INVALID_OPERATION:
-                logf("ERROR_INVALID_OPERATION");
-                break;
-            default:
-                logf("Unknown error: %d", err);
-        }
-    }
-    logf("Successfully detour.");
+    hook.commit();
     
 
     return 0;

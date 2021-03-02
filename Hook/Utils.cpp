@@ -3,6 +3,7 @@
 
 #include <psapi.h>
 #include <strsafe.h>
+#include <vector>
 #include <winsock.h>
 
 using namespace Utils;
@@ -20,6 +21,40 @@ std::wstring Utils::GetProcessName(DWORD pid)
             return std::wstring(nameBuf);
         }
     }
+}
+
+std::vector<std::wstring> list_module_names()
+{
+    std::vector<std::wstring> list;
+    HMODULE hMods[1024];
+    DWORD count;
+    
+    auto hProcess = GetCurrentProcess();
+    if (NULL == hProcess)
+        return list;
+    
+    
+    if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &count))
+    {
+        for (size_t i = 0; i < (count / sizeof(HMODULE)); i++ )
+        {
+            TCHAR szModName[MAX_PATH];
+    
+            // Get the full path to the module's file.
+    
+            if ( GetModuleBaseName( hProcess, hMods[i], szModName,
+                                      sizeof(szModName) / sizeof(TCHAR)))
+            {
+                // Print the module name and handle value.
+                list.push_back(std::wstring(szModName));
+            }
+        }
+    }
+    
+    // Release the handle to the process.
+
+    CloseHandle( hProcess );
+    return list;
 }
 
 

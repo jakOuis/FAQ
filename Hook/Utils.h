@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <string>
+#include <vector>
 #include <winsock.h>
 
 namespace Utils
@@ -12,6 +13,8 @@ bool init_logger();
 void log(std::string text);
 void log(const char* str, size_t len);
 void log_error(const char* msg);
+
+std::vector<std::wstring> list_module_names();
 
 #define logf(...) \
 { \
