@@ -40,17 +40,17 @@ void ModuleHook::commit()
     logf("Detour transaction successfully committed");
 }
 
-void ModuleHook::hookFunc(const char* name, PVOID* originalFunc, void*& hookFunc)
+void ModuleHook::hookFunc(const char* logName, const char* name, PVOID* originalFunc, void* hookFunc)
 {
-    auto funcAddr = GetProcAddress(hMod, "?execDML@CppSQLite3DB@@QAEHPBDPAH@Z");
-    logf("SQLite3DB::execDML: %p", funcAddr);
+    auto funcAddr = GetProcAddress(hMod, name);
+    logf("%s: %p", logName, funcAddr);
     if(funcAddr == NULL)
     {
         logf("Get null of function %s", name);
     }
 
     DetourTransactionBegin();
-    logf("Try hook SQLite3DB::execDML");
+    logf("Try hook %s", logName);
     *originalFunc = (void*)funcAddr;
     auto err = DetourAttach(originalFunc, hookFunc);
     if(err != NO_ERROR)

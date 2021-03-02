@@ -11,5 +11,5 @@ public:
 
     void commit();
 
-    void hookFunc(const char* name, PVOID* originalFunc, void*& hookFunc);
+    void hookFunc(const char* logName, const char* name, PVOID* originalFunc, void* hookFunc);
 };

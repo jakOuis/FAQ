@@ -17,7 +17,10 @@ namespace Logger
             {
                 IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
                 var data = server.Receive(ref remote);
-                Console.WriteLine("[{0}] {1}", DateTime.Now.ToShortTimeString(), Encoding.UTF8.GetString(data));
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("[{0}] ", DateTime.Now.ToLongTimeString());
+                Console.ResetColor();
+                Console.WriteLine(Encoding.UTF8.GetString(data));
             }
         }
     }

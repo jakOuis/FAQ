@@ -127,7 +127,16 @@ DWORD WINAPI thread_func(LPVOID lpParam)
     hook.begin();
 
     auto fn = &HookSQLite3DB::execDML;
-    hook.hookFunc("?execDML@CppSQLite3DB@@QAEHPBDPAH@Z", (void**)&OriginalSQLite3DB_execDML, (void*&)fn);
+    hook.hookFunc("SQLite3DB::execDML",
+        "?execDML@CppSQLite3DB@@QAEHPBDPAH@Z",
+        (void**)&OriginalSQLite3DB_execDML,
+        (void*&)fn);
+
+    auto fn2 = &HookSQLite3DB::execQueryEx;
+    hook.hookFunc("SQLite3DB::execQueryEx",
+        "?execQueryEx@CppSQLite3DB@@QAE?AVCppSQLite3Query@@PBDPAHH@Z",
+        (void**)&OriginalSQLite3DB_execQueryEx,
+        (void*&)fn2);
 
     hook.commit();
     
