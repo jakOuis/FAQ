@@ -28,14 +28,15 @@ void log(std::string text)
     logf("%s", text.c_str());
 }
 
-SOCKET SendSocket = INVALID_SOCKET;
-sockaddr_in RecvAddr;
+static SOCKET SendSocket = INVALID_SOCKET;
+static sockaddr_in RecvAddr;
 
 void log(const char* str, size_t len)
 {
     if(SendSocket == INVALID_SOCKET)
         return;
-    sendto(SendSocket, str, len, 0, (SOCKADDR*)&RecvAddr, sizeof(RecvAddr));
+    auto recv_addr = RecvAddr;
+    sendto(SendSocket, str, len, 0, (SOCKADDR*)&recv_addr, sizeof(RecvAddr));
 }
 
 bool init_logger()
