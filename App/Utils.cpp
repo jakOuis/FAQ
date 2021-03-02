@@ -102,7 +102,7 @@ ProcessInfo::ProcessInfo(DWORD pid): pid(pid), processName(TEXT("<unknown>"))
 
 void print_error(const char* msg)
 {
-    LPVOID lpMsgBuf;
+    LPSTR lpMsgBuf;
     LPSTR lpDisplayBuf;
     DWORD dw = GetLastError();
 
@@ -119,9 +119,10 @@ void print_error(const char* msg)
 
     // Display the error message and exit the process
 
+    auto len = (lstrlen((LPCTSTR)lpMsgBuf) + strlen(msg) + 128) * sizeof(TCHAR);
     lpDisplayBuf = (LPSTR)LocalAlloc(
         LMEM_ZEROINIT,
-        (lstrlen((LPCTSTR)lpMsgBuf) + strlen(msg) + 128) * sizeof(TCHAR));
+        len);
     
     StringCchPrintf(
         (LPTSTR)lpDisplayBuf,

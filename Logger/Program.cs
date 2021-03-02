@@ -17,7 +17,7 @@ namespace Logger
             {
                 IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
                 var data = server.Receive(ref remote);
-                Console.WriteLine("{0}: {1}", remote.ToString(), Encoding.UTF8.GetString(data));
+                Console.WriteLine("[{0}] {1}", DateTime.Now.ToShortTimeString(), Encoding.UTF8.GetString(data));
             }
         }
     }

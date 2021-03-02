@@ -1,6 +1,10 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
+
+#include <psapi.h>
+
 #include "header.h"
+#include "Utils.h"
 #include <stdio.h>
 #include <winsock.h>
 #include <string>
@@ -36,6 +40,9 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         return TRUE;
     loaded = true;
     
+    init_logger();
+    
+    
     DWORD thread_id;
     CreateThread(
         nullptr,
@@ -54,94 +61,55 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     return TRUE;
 }
 
-SOCKET SendSocket = INVALID_SOCKET;
-sockaddr_in RecvAddr;
-
-#define logf(...) \
-    if(SendSocket != INVALID_SOCKET) \
-    { \
-        char buf[1024]; \
-        sprintf_s(buf, sizeof(buf), __VA_ARGS__); \
-        char fmt_buf[1024]; \
-        sprintf_s(fmt_buf, sizeof(fmt_buf), "[%d] %s", GetCurrentProcessId(), buf); \
-        sendto(SendSocket,fmt_buf, strlen(fmt_buf), 0, (SOCKADDR*)&RecvAddr, sizeof(RecvAddr)); \
-    }
-
-
-void log(std::string text)
-{
-    logf("%s", text.c_str());
-}
-
-void init_logger()
-{
-    int iResult;
-        WSADATA wsaData;
-        unsigned short Port = 47381;
-    
-        char SendBuf[1024];
-        int BufLen = 1024;
-    
-        //----------------------
-        // Initialize Winsock
-        iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-        if (iResult != NO_ERROR) {
-            wprintf(L"WSAStartup failed with error: %d\n", iResult);
-            return ;
-        }
-    
-        //---------------------------------------------
-        // Create a socket for sending data
-        SendSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-        if (SendSocket == INVALID_SOCKET) {
-            wprintf(L"socket failed with error: %ld\n", WSAGetLastError());
-            WSACleanup();
-            return ;
-        }
-        //---------------------------------------------
-        // Set up the RecvAddr structure with the IP address of
-        // the receiver (in this example case "192.168.1.1")
-        // and the specified port number.
-        RecvAddr.sin_family = AF_INET;
-        RecvAddr.sin_port = htons(Port);
-        RecvAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    
-        while (true)
-        {
-            log("Initialize udp logger.");
-    
-            return ;
-            Sleep(10000);
-        }
-        //---------------------------------------------
-        // Send a datagram to the receiver
-        //---------------------------------------------
-        // When the application is finished sending, close the socket.
-        wprintf(L"Finished sending. Closing socket.\n");
-        iResult = closesocket(SendSocket);
-        if (iResult == SOCKET_ERROR) {
-            wprintf(L"closesocket failed with error: %d\n", WSAGetLastError());
-            WSACleanup();
-            return ;
-        }
-        //---------------------------------------------
-        // Clean up and quit.
-        wprintf(L"Exiting.\n");
-        WSACleanup();
-        return ;
-}
-
-
 DWORD WINAPI thread_func(LPVOID lpParam)
 {
-    init_logger();
+    auto processName = Utils::GetProcessName(GetCurrentProcessId());
+    logf("%ls", processName.c_str());
+    if(processName != TEXT("QQ.exe") && processName != TEXT("TIM.exe"))
+        return 0;
+
+    
 
     logf("start hook");
 
-    auto module = GetModuleHandleA("KernelUtils.dll");
+    auto hProcess = GetCurrentProcess();
+    if (NULL == hProcess)
+        return 1;
+
+    // Get a list of all the modules in this process.
+
+    HMODULE hMods[1024];
+    DWORD count;
+    
+    if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &count))
+    {
+        for (size_t i = 0; i < (count / sizeof(HMODULE)); i++ )
+        {
+            TCHAR szModName[MAX_PATH];
+
+            // Get the full path to the module's file.
+
+            if ( GetModuleBaseName( hProcess, hMods[i], szModName,
+                                      sizeof(szModName) / sizeof(TCHAR)))
+            {
+                // Print the module name and handle value.
+
+                logf("%ls", szModName);
+            }
+        }
+    }
+    
+    // Release the handle to the process.
+
+    CloseHandle( hProcess );
+
+    auto module = GetModuleHandleA("KernelUtil.dll");
     logf("KernelUtils: %p", module);
     if(module == NULL)
+    {
+        log_error("Invalid HMODULE");
         return 0;
+    }
 
     auto execDML = GetProcAddress(module, "?execDML@CppSQLite3DB@@QAEHPBDPAH@Z");
     logf("SQLite3DB::execDML: %p", execDML);
