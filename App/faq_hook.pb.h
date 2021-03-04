@@ -57,16 +57,16 @@ namespace faq {
 class SQLiteField;
 class SQLiteFieldDefaultTypeInternal;
 extern SQLiteFieldDefaultTypeInternal _SQLiteField_default_instance_;
-class SQLiteQuery;
-class SQLiteQueryDefaultTypeInternal;
-extern SQLiteQueryDefaultTypeInternal _SQLiteQuery_default_instance_;
+class SQLiteQueryRow;
+class SQLiteQueryRowDefaultTypeInternal;
+extern SQLiteQueryRowDefaultTypeInternal _SQLiteQueryRow_default_instance_;
 class SQLiteQueryString;
 class SQLiteQueryStringDefaultTypeInternal;
 extern SQLiteQueryStringDefaultTypeInternal _SQLiteQueryString_default_instance_;
 }  // namespace faq
 PROTOBUF_NAMESPACE_OPEN
 template<> ::faq::SQLiteField* Arena::CreateMaybeMessage<::faq::SQLiteField>(Arena*);
-template<> ::faq::SQLiteQuery* Arena::CreateMaybeMessage<::faq::SQLiteQuery>(Arena*);
+template<> ::faq::SQLiteQueryRow* Arena::CreateMaybeMessage<::faq::SQLiteQueryRow>(Arena*);
 template<> ::faq::SQLiteQueryString* Arena::CreateMaybeMessage<::faq::SQLiteQueryString>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace faq {
@@ -216,23 +216,23 @@ class SQLiteQueryString PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class SQLiteQuery PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:faq.SQLiteQuery) */ {
+class SQLiteQueryRow PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:faq.SQLiteQueryRow) */ {
  public:
-  inline SQLiteQuery() : SQLiteQuery(nullptr) {}
-  virtual ~SQLiteQuery();
+  inline SQLiteQueryRow() : SQLiteQueryRow(nullptr) {}
+  virtual ~SQLiteQueryRow();
 
-  SQLiteQuery(const SQLiteQuery& from);
-  SQLiteQuery(SQLiteQuery&& from) noexcept
-    : SQLiteQuery() {
+  SQLiteQueryRow(const SQLiteQueryRow& from);
+  SQLiteQueryRow(SQLiteQueryRow&& from) noexcept
+    : SQLiteQueryRow() {
     *this = ::std::move(from);
   }
 
-  inline SQLiteQuery& operator=(const SQLiteQuery& from) {
+  inline SQLiteQueryRow& operator=(const SQLiteQueryRow& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SQLiteQuery& operator=(SQLiteQuery&& from) noexcept {
+  inline SQLiteQueryRow& operator=(SQLiteQueryRow&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -250,19 +250,19 @@ class SQLiteQuery PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const SQLiteQuery& default_instance();
+  static const SQLiteQueryRow& default_instance();
 
-  static inline const SQLiteQuery* internal_default_instance() {
-    return reinterpret_cast<const SQLiteQuery*>(
-               &_SQLiteQuery_default_instance_);
+  static inline const SQLiteQueryRow* internal_default_instance() {
+    return reinterpret_cast<const SQLiteQueryRow*>(
+               &_SQLiteQueryRow_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  friend void swap(SQLiteQuery& a, SQLiteQuery& b) {
+  friend void swap(SQLiteQueryRow& a, SQLiteQueryRow& b) {
     a.Swap(&b);
   }
-  inline void Swap(SQLiteQuery* other) {
+  inline void Swap(SQLiteQueryRow* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -270,7 +270,7 @@ class SQLiteQuery PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(SQLiteQuery* other) {
+  void UnsafeArenaSwap(SQLiteQueryRow* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -278,17 +278,17 @@ class SQLiteQuery PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline SQLiteQuery* New() const final {
-    return CreateMaybeMessage<SQLiteQuery>(nullptr);
+  inline SQLiteQueryRow* New() const final {
+    return CreateMaybeMessage<SQLiteQueryRow>(nullptr);
   }
 
-  SQLiteQuery* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<SQLiteQuery>(arena);
+  SQLiteQueryRow* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SQLiteQueryRow>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const SQLiteQuery& from);
-  void MergeFrom(const SQLiteQuery& from);
+  void CopyFrom(const SQLiteQueryRow& from);
+  void MergeFrom(const SQLiteQueryRow& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -302,13 +302,13 @@ class SQLiteQuery PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(SQLiteQuery* other);
+  void InternalSwap(SQLiteQueryRow* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "faq.SQLiteQuery";
+    return "faq.SQLiteQueryRow";
   }
   protected:
-  explicit SQLiteQuery(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit SQLiteQueryRow(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -348,7 +348,7 @@ class SQLiteQuery PROTOBUF_FINAL :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::faq::SQLiteField >&
       fields() const;
 
-  // @@protoc_insertion_point(class_scope:faq.SQLiteQuery)
+  // @@protoc_insertion_point(class_scope:faq.SQLiteQueryRow)
  private:
   class _Internal;
 
@@ -401,8 +401,9 @@ class SQLiteField PROTOBUF_FINAL :
     kInt = 1,
     kInt64 = 2,
     kString = 3,
-    kBlog = 4,
+    kBlob = 4,
     kFloat = 5,
+    kNull = 6,
     VALUE_NOT_SET = 0,
   };
 
@@ -482,12 +483,34 @@ class SQLiteField PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kNameFieldNumber = 8,
     kIntFieldNumber = 1,
     kInt64FieldNumber = 2,
     kStringFieldNumber = 3,
-    kBlogFieldNumber = 4,
+    kBlobFieldNumber = 4,
     kFloatFieldNumber = 5,
+    kNullFieldNumber = 6,
   };
+  // string name = 8;
+  bool has_name() const;
+  private:
+  bool _internal_has_name() const;
+  public:
+  void clear_name();
+  const std::string& name() const;
+  void set_name(const std::string& value);
+  void set_name(std::string&& value);
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  std::string* mutable_name();
+  std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
   // int32 int = 1;
   private:
   bool _internal_has_int_() const;
@@ -531,23 +554,23 @@ class SQLiteField PROTOBUF_FINAL :
   std::string* _internal_mutable_string();
   public:
 
-  // bytes blog = 4;
+  // bytes blob = 4;
   private:
-  bool _internal_has_blog() const;
+  bool _internal_has_blob() const;
   public:
-  void clear_blog();
-  const std::string& blog() const;
-  void set_blog(const std::string& value);
-  void set_blog(std::string&& value);
-  void set_blog(const char* value);
-  void set_blog(const void* value, size_t size);
-  std::string* mutable_blog();
-  std::string* release_blog();
-  void set_allocated_blog(std::string* blog);
+  void clear_blob();
+  const std::string& blob() const;
+  void set_blob(const std::string& value);
+  void set_blob(std::string&& value);
+  void set_blob(const char* value);
+  void set_blob(const void* value, size_t size);
+  std::string* mutable_blob();
+  std::string* release_blob();
+  void set_allocated_blob(std::string* blob);
   private:
-  const std::string& _internal_blog() const;
-  void _internal_set_blog(const std::string& value);
-  std::string* _internal_mutable_blog();
+  const std::string& _internal_blob() const;
+  void _internal_set_blob(const std::string& value);
+  std::string* _internal_mutable_blob();
   public:
 
   // float float = 5;
@@ -562,6 +585,18 @@ class SQLiteField PROTOBUF_FINAL :
   void _internal_set_float_(float value);
   public:
 
+  // bool null = 6;
+  private:
+  bool _internal_has_null() const;
+  public:
+  void clear_null();
+  bool null() const;
+  void set_null(bool value);
+  private:
+  bool _internal_null() const;
+  void _internal_set_null(bool value);
+  public:
+
   void clear_value();
   ValueCase value_case() const;
   // @@protoc_insertion_point(class_scope:faq.SQLiteField)
@@ -570,8 +605,9 @@ class SQLiteField PROTOBUF_FINAL :
   void set_has_int_();
   void set_has_int64();
   void set_has_string();
-  void set_has_blog();
+  void set_has_blob();
   void set_has_float_();
+  void set_has_null();
 
   inline bool has_value() const;
   inline void clear_has_value();
@@ -579,15 +615,18 @@ class SQLiteField PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   union ValueUnion {
     ValueUnion() {}
     ::PROTOBUF_NAMESPACE_ID::int32 int__;
     ::PROTOBUF_NAMESPACE_ID::int64 int64_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr string_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr blog_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr blob_;
     float float__;
+    bool null_;
   } value_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::uint32 _oneof_case_[1];
 
   friend struct ::TableStruct_faq_5fhook_2eproto;
@@ -666,50 +705,123 @@ inline void SQLiteQueryString::set_allocated_sql(std::string* sql) {
 
 // -------------------------------------------------------------------
 
-// SQLiteQuery
+// SQLiteQueryRow
 
 // repeated .faq.SQLiteField fields = 1;
-inline int SQLiteQuery::_internal_fields_size() const {
+inline int SQLiteQueryRow::_internal_fields_size() const {
   return fields_.size();
 }
-inline int SQLiteQuery::fields_size() const {
+inline int SQLiteQueryRow::fields_size() const {
   return _internal_fields_size();
 }
-inline void SQLiteQuery::clear_fields() {
+inline void SQLiteQueryRow::clear_fields() {
   fields_.Clear();
 }
-inline ::faq::SQLiteField* SQLiteQuery::mutable_fields(int index) {
-  // @@protoc_insertion_point(field_mutable:faq.SQLiteQuery.fields)
+inline ::faq::SQLiteField* SQLiteQueryRow::mutable_fields(int index) {
+  // @@protoc_insertion_point(field_mutable:faq.SQLiteQueryRow.fields)
   return fields_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::faq::SQLiteField >*
-SQLiteQuery::mutable_fields() {
-  // @@protoc_insertion_point(field_mutable_list:faq.SQLiteQuery.fields)
+SQLiteQueryRow::mutable_fields() {
+  // @@protoc_insertion_point(field_mutable_list:faq.SQLiteQueryRow.fields)
   return &fields_;
 }
-inline const ::faq::SQLiteField& SQLiteQuery::_internal_fields(int index) const {
+inline const ::faq::SQLiteField& SQLiteQueryRow::_internal_fields(int index) const {
   return fields_.Get(index);
 }
-inline const ::faq::SQLiteField& SQLiteQuery::fields(int index) const {
-  // @@protoc_insertion_point(field_get:faq.SQLiteQuery.fields)
+inline const ::faq::SQLiteField& SQLiteQueryRow::fields(int index) const {
+  // @@protoc_insertion_point(field_get:faq.SQLiteQueryRow.fields)
   return _internal_fields(index);
 }
-inline ::faq::SQLiteField* SQLiteQuery::_internal_add_fields() {
+inline ::faq::SQLiteField* SQLiteQueryRow::_internal_add_fields() {
   return fields_.Add();
 }
-inline ::faq::SQLiteField* SQLiteQuery::add_fields() {
-  // @@protoc_insertion_point(field_add:faq.SQLiteQuery.fields)
+inline ::faq::SQLiteField* SQLiteQueryRow::add_fields() {
+  // @@protoc_insertion_point(field_add:faq.SQLiteQueryRow.fields)
   return _internal_add_fields();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::faq::SQLiteField >&
-SQLiteQuery::fields() const {
-  // @@protoc_insertion_point(field_list:faq.SQLiteQuery.fields)
+SQLiteQueryRow::fields() const {
+  // @@protoc_insertion_point(field_list:faq.SQLiteQueryRow.fields)
   return fields_;
 }
 
 // -------------------------------------------------------------------
 
 // SQLiteField
+
+// string name = 8;
+inline bool SQLiteField::_internal_has_name() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool SQLiteField::has_name() const {
+  return _internal_has_name();
+}
+inline void SQLiteField::clear_name() {
+  name_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& SQLiteField::name() const {
+  // @@protoc_insertion_point(field_get:faq.SQLiteField.name)
+  return _internal_name();
+}
+inline void SQLiteField::set_name(const std::string& value) {
+  _internal_set_name(value);
+  // @@protoc_insertion_point(field_set:faq.SQLiteField.name)
+}
+inline std::string* SQLiteField::mutable_name() {
+  // @@protoc_insertion_point(field_mutable:faq.SQLiteField.name)
+  return _internal_mutable_name();
+}
+inline const std::string& SQLiteField::_internal_name() const {
+  return name_.Get();
+}
+inline void SQLiteField::_internal_set_name(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline void SQLiteField::set_name(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  name_.Set(
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:faq.SQLiteField.name)
+}
+inline void SQLiteField::set_name(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:faq.SQLiteField.name)
+}
+inline void SQLiteField::set_name(const char* value,
+    size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:faq.SQLiteField.name)
+}
+inline std::string* SQLiteField::_internal_mutable_name() {
+  _has_bits_[0] |= 0x00000001u;
+  return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* SQLiteField::release_name() {
+  // @@protoc_insertion_point(field_release:faq.SQLiteField.name)
+  if (!_internal_has_name()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return name_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SQLiteField::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:faq.SQLiteField.name)
+}
 
 // int32 int = 1;
 inline bool SQLiteField::_internal_has_int_() const {
@@ -888,111 +1000,111 @@ inline void SQLiteField::set_allocated_string(std::string* string) {
   // @@protoc_insertion_point(field_set_allocated:faq.SQLiteField.string)
 }
 
-// bytes blog = 4;
-inline bool SQLiteField::_internal_has_blog() const {
-  return value_case() == kBlog;
+// bytes blob = 4;
+inline bool SQLiteField::_internal_has_blob() const {
+  return value_case() == kBlob;
 }
-inline void SQLiteField::set_has_blog() {
-  _oneof_case_[0] = kBlog;
+inline void SQLiteField::set_has_blob() {
+  _oneof_case_[0] = kBlob;
 }
-inline void SQLiteField::clear_blog() {
-  if (_internal_has_blog()) {
-    value_.blog_.Destroy(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+inline void SQLiteField::clear_blob() {
+  if (_internal_has_blob()) {
+    value_.blob_.Destroy(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
     clear_has_value();
   }
 }
-inline const std::string& SQLiteField::blog() const {
-  // @@protoc_insertion_point(field_get:faq.SQLiteField.blog)
-  return _internal_blog();
+inline const std::string& SQLiteField::blob() const {
+  // @@protoc_insertion_point(field_get:faq.SQLiteField.blob)
+  return _internal_blob();
 }
-inline void SQLiteField::set_blog(const std::string& value) {
-  _internal_set_blog(value);
-  // @@protoc_insertion_point(field_set:faq.SQLiteField.blog)
+inline void SQLiteField::set_blob(const std::string& value) {
+  _internal_set_blob(value);
+  // @@protoc_insertion_point(field_set:faq.SQLiteField.blob)
 }
-inline std::string* SQLiteField::mutable_blog() {
-  // @@protoc_insertion_point(field_mutable:faq.SQLiteField.blog)
-  return _internal_mutable_blog();
+inline std::string* SQLiteField::mutable_blob() {
+  // @@protoc_insertion_point(field_mutable:faq.SQLiteField.blob)
+  return _internal_mutable_blob();
 }
-inline const std::string& SQLiteField::_internal_blog() const {
-  if (_internal_has_blog()) {
-    return value_.blog_.Get();
+inline const std::string& SQLiteField::_internal_blob() const {
+  if (_internal_has_blob()) {
+    return value_.blob_.Get();
   }
   return ::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited();
 }
-inline void SQLiteField::_internal_set_blog(const std::string& value) {
-  if (!_internal_has_blog()) {
+inline void SQLiteField::_internal_set_blob(const std::string& value) {
+  if (!_internal_has_blob()) {
     clear_value();
-    set_has_blog();
-    value_.blog_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    set_has_blob();
+    value_.blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   }
-  value_.blog_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+  value_.blob_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
-inline void SQLiteField::set_blog(std::string&& value) {
-  // @@protoc_insertion_point(field_set:faq.SQLiteField.blog)
-  if (!_internal_has_blog()) {
+inline void SQLiteField::set_blob(std::string&& value) {
+  // @@protoc_insertion_point(field_set:faq.SQLiteField.blob)
+  if (!_internal_has_blob()) {
     clear_value();
-    set_has_blog();
-    value_.blog_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    set_has_blob();
+    value_.blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   }
-  value_.blog_.Set(
+  value_.blob_.Set(
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:faq.SQLiteField.blog)
+  // @@protoc_insertion_point(field_set_rvalue:faq.SQLiteField.blob)
 }
-inline void SQLiteField::set_blog(const char* value) {
+inline void SQLiteField::set_blob(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  if (!_internal_has_blog()) {
+  if (!_internal_has_blob()) {
     clear_value();
-    set_has_blog();
-    value_.blog_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    set_has_blob();
+    value_.blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   }
-  value_.blog_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{},
+  value_.blob_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{},
       ::std::string(value), GetArena());
-  // @@protoc_insertion_point(field_set_char:faq.SQLiteField.blog)
+  // @@protoc_insertion_point(field_set_char:faq.SQLiteField.blob)
 }
-inline void SQLiteField::set_blog(const void* value,
+inline void SQLiteField::set_blob(const void* value,
                              size_t size) {
-  if (!_internal_has_blog()) {
+  if (!_internal_has_blob()) {
     clear_value();
-    set_has_blog();
-    value_.blog_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    set_has_blob();
+    value_.blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   }
-  value_.blog_.Set(
+  value_.blob_.Set(
       ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
       reinterpret_cast<const char*>(value), size),
       GetArena());
-  // @@protoc_insertion_point(field_set_pointer:faq.SQLiteField.blog)
+  // @@protoc_insertion_point(field_set_pointer:faq.SQLiteField.blob)
 }
-inline std::string* SQLiteField::_internal_mutable_blog() {
-  if (!_internal_has_blog()) {
+inline std::string* SQLiteField::_internal_mutable_blob() {
+  if (!_internal_has_blob()) {
     clear_value();
-    set_has_blog();
-    value_.blog_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    set_has_blob();
+    value_.blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   }
-  return value_.blog_.Mutable(
+  return value_.blob_.Mutable(
       ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
-inline std::string* SQLiteField::release_blog() {
-  // @@protoc_insertion_point(field_release:faq.SQLiteField.blog)
-  if (_internal_has_blog()) {
+inline std::string* SQLiteField::release_blob() {
+  // @@protoc_insertion_point(field_release:faq.SQLiteField.blob)
+  if (_internal_has_blob()) {
     clear_has_value();
-    return value_.blog_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+    return value_.blob_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   } else {
     return nullptr;
   }
 }
-inline void SQLiteField::set_allocated_blog(std::string* blog) {
+inline void SQLiteField::set_allocated_blob(std::string* blob) {
   if (has_value()) {
     clear_value();
   }
-  if (blog != nullptr) {
-    set_has_blog();
-    value_.blog_.UnsafeSetDefault(blog);
+  if (blob != nullptr) {
+    set_has_blob();
+    value_.blob_.UnsafeSetDefault(blob);
     ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena();
     if (arena != nullptr) {
-      arena->Own(blog);
+      arena->Own(blob);
     }
   }
-  // @@protoc_insertion_point(field_set_allocated:faq.SQLiteField.blog)
+  // @@protoc_insertion_point(field_set_allocated:faq.SQLiteField.blob)
 }
 
 // float float = 5;
@@ -1028,6 +1140,41 @@ inline float SQLiteField::float_() const {
 inline void SQLiteField::set_float_(float value) {
   _internal_set_float_(value);
   // @@protoc_insertion_point(field_set:faq.SQLiteField.float)
+}
+
+// bool null = 6;
+inline bool SQLiteField::_internal_has_null() const {
+  return value_case() == kNull;
+}
+inline void SQLiteField::set_has_null() {
+  _oneof_case_[0] = kNull;
+}
+inline void SQLiteField::clear_null() {
+  if (_internal_has_null()) {
+    value_.null_ = false;
+    clear_has_value();
+  }
+}
+inline bool SQLiteField::_internal_null() const {
+  if (_internal_has_null()) {
+    return value_.null_;
+  }
+  return false;
+}
+inline void SQLiteField::_internal_set_null(bool value) {
+  if (!_internal_has_null()) {
+    clear_value();
+    set_has_null();
+  }
+  value_.null_ = value;
+}
+inline bool SQLiteField::null() const {
+  // @@protoc_insertion_point(field_get:faq.SQLiteField.null)
+  return _internal_null();
+}
+inline void SQLiteField::set_null(bool value) {
+  _internal_set_null(value);
+  // @@protoc_insertion_point(field_set:faq.SQLiteField.null)
 }
 
 inline bool SQLiteField::has_value() const {

@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{65bdf524-6635-4195-b211-677b04960f9b}</ProjectGuid>
+    <ProjectGuid>{a82b8cd5-dbee-4b5b-8808-41512ba1de77}</ProjectGuid>
     <RootNamespace>Protos</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -90,6 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -151,12 +152,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="faq_client.grpc.pb.h" />
+    <ClInclude Include="faq_client.pb.h" />
     <ClInclude Include="faq_hook.grpc.pb.h" />
     <ClInclude Include="faq_hook.pb.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="faq_client.grpc.pb.cc" />
+    <ClCompile Include="faq_client.pb.cc" />
     <ClCompile Include="faq_hook.grpc.pb.cc" />
     <ClCompile Include="faq_hook.pb.cc" />
     <ClCompile Include="pch.cpp">

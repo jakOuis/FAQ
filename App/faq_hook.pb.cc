@@ -20,10 +20,10 @@ class SQLiteQueryStringDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SQLiteQueryString> _instance;
 } _SQLiteQueryString_default_instance_;
-class SQLiteQueryDefaultTypeInternal {
+class SQLiteQueryRowDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SQLiteQuery> _instance;
-} _SQLiteQuery_default_instance_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SQLiteQueryRow> _instance;
+} _SQLiteQueryRow_default_instance_;
 class SQLiteFieldDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SQLiteField> _instance;
@@ -42,18 +42,18 @@ static void InitDefaultsscc_info_SQLiteField_faq_5fhook_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SQLiteField_faq_5fhook_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SQLiteField_faq_5fhook_2eproto}, {}};
 
-static void InitDefaultsscc_info_SQLiteQuery_faq_5fhook_2eproto() {
+static void InitDefaultsscc_info_SQLiteQueryRow_faq_5fhook_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::faq::_SQLiteQuery_default_instance_;
-    new (ptr) ::faq::SQLiteQuery();
+    void* ptr = &::faq::_SQLiteQueryRow_default_instance_;
+    new (ptr) ::faq::SQLiteQueryRow();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SQLiteQuery_faq_5fhook_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SQLiteQuery_faq_5fhook_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SQLiteQueryRow_faq_5fhook_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SQLiteQueryRow_faq_5fhook_2eproto}, {
       &scc_info_SQLiteField_faq_5fhook_2eproto.base,}};
 
 static void InitDefaultsscc_info_SQLiteQueryString_faq_5fhook_2eproto() {
@@ -81,55 +81,65 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_faq_5fhook_2eproto::offsets[] 
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::faq::SQLiteQueryString, sql_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::faq::SQLiteQuery, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::faq::SQLiteQueryRow, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::faq::SQLiteQuery, fields_),
-  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::faq::SQLiteQueryRow, fields_),
+  PROTOBUF_FIELD_OFFSET(::faq::SQLiteField, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::faq::SQLiteField, _internal_metadata_),
   ~0u,  // no _extensions_
   PROTOBUF_FIELD_OFFSET(::faq::SQLiteField, _oneof_case_[0]),
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::faq::SQLiteField, name_),
+  ::PROTOBUF_NAMESPACE_ID::internal::kInvalidFieldOffsetTag,
   ::PROTOBUF_NAMESPACE_ID::internal::kInvalidFieldOffsetTag,
   ::PROTOBUF_NAMESPACE_ID::internal::kInvalidFieldOffsetTag,
   ::PROTOBUF_NAMESPACE_ID::internal::kInvalidFieldOffsetTag,
   ::PROTOBUF_NAMESPACE_ID::internal::kInvalidFieldOffsetTag,
   ::PROTOBUF_NAMESPACE_ID::internal::kInvalidFieldOffsetTag,
   PROTOBUF_FIELD_OFFSET(::faq::SQLiteField, value_),
+  0,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::faq::SQLiteQueryString)},
-  { 6, -1, sizeof(::faq::SQLiteQuery)},
-  { 12, -1, sizeof(::faq::SQLiteField)},
+  { 6, -1, sizeof(::faq::SQLiteQueryRow)},
+  { 12, 25, sizeof(::faq::SQLiteField)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::faq::_SQLiteQueryString_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::faq::_SQLiteQuery_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::faq::_SQLiteQueryRow_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::faq::_SQLiteField_default_instance_),
 };
 
 const char descriptor_table_protodef_faq_5fhook_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\016faq_hook.proto\022\003faq\" \n\021SQLiteQueryStri"
-  "ng\022\013\n\003sql\030\001 \001(\t\"/\n\013SQLiteQuery\022 \n\006fields"
-  "\030\001 \003(\0132\020.faq.SQLiteField\"i\n\013SQLiteField\022"
-  "\r\n\003int\030\001 \001(\005H\000\022\017\n\005int64\030\002 \001(\003H\000\022\020\n\006strin"
-  "g\030\003 \001(\tH\000\022\016\n\004blog\030\004 \001(\014H\000\022\017\n\005float\030\005 \001(\002"
-  "H\000B\007\n\005value2B\n\tFaQSQLite\0225\n\005Query\022\026.faq."
-  "SQLiteQueryString\032\020.faq.SQLiteQuery\"\0000\001b"
-  "\006proto3"
+  "ng\022\013\n\003sql\030\001 \001(\t\"2\n\016SQLiteQueryRow\022 \n\006fie"
+  "lds\030\001 \003(\0132\020.faq.SQLiteField\"\225\001\n\013SQLiteFi"
+  "eld\022\021\n\004name\030\010 \001(\tH\001\210\001\001\022\r\n\003int\030\001 \001(\005H\000\022\017\n"
+  "\005int64\030\002 \001(\003H\000\022\020\n\006string\030\003 \001(\tH\000\022\016\n\004blob"
+  "\030\004 \001(\014H\000\022\017\n\005float\030\005 \001(\002H\000\022\016\n\004null\030\006 \001(\010H"
+  "\000B\007\n\005valueB\007\n\005_name2E\n\tFaQSQLite\0228\n\005Quer"
+  "y\022\026.faq.SQLiteQueryString\032\023.faq.SQLiteQu"
+  "eryRow\"\0000\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_faq_5fhook_2eproto_deps[1] = {
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_faq_5fhook_2eproto_sccs[3] = {
   &scc_info_SQLiteField_faq_5fhook_2eproto.base,
-  &scc_info_SQLiteQuery_faq_5fhook_2eproto.base,
+  &scc_info_SQLiteQueryRow_faq_5fhook_2eproto.base,
   &scc_info_SQLiteQueryString_faq_5fhook_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_faq_5fhook_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_faq_5fhook_2eproto = {
-  false, false, descriptor_table_protodef_faq_5fhook_2eproto, "faq_hook.proto", 287,
+  false, false, descriptor_table_protodef_faq_5fhook_2eproto, "faq_hook.proto", 338,
   &descriptor_table_faq_5fhook_2eproto_once, descriptor_table_faq_5fhook_2eproto_sccs, descriptor_table_faq_5fhook_2eproto_deps, 3, 0,
   schemas, file_default_instances, TableStruct_faq_5fhook_2eproto::offsets,
   file_level_metadata_faq_5fhook_2eproto, 3, file_level_enum_descriptors_faq_5fhook_2eproto, file_level_service_descriptors_faq_5fhook_2eproto,
@@ -347,55 +357,55 @@ void SQLiteQueryString::InternalSwap(SQLiteQueryString* other) {
 
 // ===================================================================
 
-class SQLiteQuery::_Internal {
+class SQLiteQueryRow::_Internal {
  public:
 };
 
-SQLiteQuery::SQLiteQuery(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+SQLiteQueryRow::SQLiteQueryRow(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena),
   fields_(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:faq.SQLiteQuery)
+  // @@protoc_insertion_point(arena_constructor:faq.SQLiteQueryRow)
 }
-SQLiteQuery::SQLiteQuery(const SQLiteQuery& from)
+SQLiteQueryRow::SQLiteQueryRow(const SQLiteQueryRow& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       fields_(from.fields_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:faq.SQLiteQuery)
+  // @@protoc_insertion_point(copy_constructor:faq.SQLiteQueryRow)
 }
 
-void SQLiteQuery::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SQLiteQuery_faq_5fhook_2eproto.base);
+void SQLiteQueryRow::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SQLiteQueryRow_faq_5fhook_2eproto.base);
 }
 
-SQLiteQuery::~SQLiteQuery() {
-  // @@protoc_insertion_point(destructor:faq.SQLiteQuery)
+SQLiteQueryRow::~SQLiteQueryRow() {
+  // @@protoc_insertion_point(destructor:faq.SQLiteQueryRow)
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void SQLiteQuery::SharedDtor() {
+void SQLiteQueryRow::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
-void SQLiteQuery::ArenaDtor(void* object) {
-  SQLiteQuery* _this = reinterpret_cast< SQLiteQuery* >(object);
+void SQLiteQueryRow::ArenaDtor(void* object) {
+  SQLiteQueryRow* _this = reinterpret_cast< SQLiteQueryRow* >(object);
   (void)_this;
 }
-void SQLiteQuery::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void SQLiteQueryRow::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void SQLiteQuery::SetCachedSize(int size) const {
+void SQLiteQueryRow::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SQLiteQuery& SQLiteQuery::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SQLiteQuery_faq_5fhook_2eproto.base);
+const SQLiteQueryRow& SQLiteQueryRow::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SQLiteQueryRow_faq_5fhook_2eproto.base);
   return *internal_default_instance();
 }
 
 
-void SQLiteQuery::Clear() {
-// @@protoc_insertion_point(message_clear_start:faq.SQLiteQuery)
+void SQLiteQueryRow::Clear() {
+// @@protoc_insertion_point(message_clear_start:faq.SQLiteQueryRow)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -404,7 +414,7 @@ void SQLiteQuery::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* SQLiteQuery::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* SQLiteQueryRow::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -445,9 +455,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SQLiteQuery::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* SQLiteQueryRow::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:faq.SQLiteQuery)
+  // @@protoc_insertion_point(serialize_to_array_start:faq.SQLiteQueryRow)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -463,12 +473,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:faq.SQLiteQuery)
+  // @@protoc_insertion_point(serialize_to_array_end:faq.SQLiteQueryRow)
   return target;
 }
 
-size_t SQLiteQuery::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:faq.SQLiteQuery)
+size_t SQLiteQueryRow::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:faq.SQLiteQueryRow)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -491,23 +501,23 @@ size_t SQLiteQuery::ByteSizeLong() const {
   return total_size;
 }
 
-void SQLiteQuery::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:faq.SQLiteQuery)
+void SQLiteQueryRow::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:faq.SQLiteQueryRow)
   GOOGLE_DCHECK_NE(&from, this);
-  const SQLiteQuery* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SQLiteQuery>(
+  const SQLiteQueryRow* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SQLiteQueryRow>(
           &from);
   if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:faq.SQLiteQuery)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:faq.SQLiteQueryRow)
     ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:faq.SQLiteQuery)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:faq.SQLiteQueryRow)
     MergeFrom(*source);
   }
 }
 
-void SQLiteQuery::MergeFrom(const SQLiteQuery& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:faq.SQLiteQuery)
+void SQLiteQueryRow::MergeFrom(const SQLiteQueryRow& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:faq.SQLiteQueryRow)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -516,31 +526,31 @@ void SQLiteQuery::MergeFrom(const SQLiteQuery& from) {
   fields_.MergeFrom(from.fields_);
 }
 
-void SQLiteQuery::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:faq.SQLiteQuery)
+void SQLiteQueryRow::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:faq.SQLiteQueryRow)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void SQLiteQuery::CopyFrom(const SQLiteQuery& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:faq.SQLiteQuery)
+void SQLiteQueryRow::CopyFrom(const SQLiteQueryRow& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:faq.SQLiteQueryRow)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SQLiteQuery::IsInitialized() const {
+bool SQLiteQueryRow::IsInitialized() const {
   return true;
 }
 
-void SQLiteQuery::InternalSwap(SQLiteQuery* other) {
+void SQLiteQueryRow::InternalSwap(SQLiteQueryRow* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   fields_.InternalSwap(&other->fields_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata SQLiteQuery::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata SQLiteQueryRow::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -549,6 +559,10 @@ void SQLiteQuery::InternalSwap(SQLiteQuery* other) {
 
 class SQLiteField::_Internal {
  public:
+  using HasBits = decltype(std::declval<SQLiteField>()._has_bits_);
+  static void set_has_name(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 SQLiteField::SQLiteField(::PROTOBUF_NAMESPACE_ID::Arena* arena)
@@ -558,8 +572,14 @@ SQLiteField::SQLiteField(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   // @@protoc_insertion_point(arena_constructor:faq.SQLiteField)
 }
 SQLiteField::SQLiteField(const SQLiteField& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_name()) {
+    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
+      GetArena());
+  }
   clear_has_value();
   switch (from.value_case()) {
     case kInt: {
@@ -574,12 +594,16 @@ SQLiteField::SQLiteField(const SQLiteField& from)
       _internal_set_string(from._internal_string());
       break;
     }
-    case kBlog: {
-      _internal_set_blog(from._internal_blog());
+    case kBlob: {
+      _internal_set_blob(from._internal_blob());
       break;
     }
     case kFloat: {
       _internal_set_float_(from._internal_float_());
+      break;
+    }
+    case kNull: {
+      _internal_set_null(from._internal_null());
       break;
     }
     case VALUE_NOT_SET: {
@@ -591,6 +615,7 @@ SQLiteField::SQLiteField(const SQLiteField& from)
 
 void SQLiteField::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SQLiteField_faq_5fhook_2eproto.base);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   clear_has_value();
 }
 
@@ -602,6 +627,7 @@ SQLiteField::~SQLiteField() {
 
 void SQLiteField::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
+  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (has_value()) {
     clear_value();
   }
@@ -637,11 +663,15 @@ void SQLiteField::clear_value() {
       value_.string_.Destroy(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
       break;
     }
-    case kBlog: {
-      value_.blog_.Destroy(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+    case kBlob: {
+      value_.blob_.Destroy(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
       break;
     }
     case kFloat: {
+      // No need to clear
+      break;
+    }
+    case kNull: {
       // No need to clear
       break;
     }
@@ -659,12 +689,18 @@ void SQLiteField::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    name_.ClearNonDefaultToEmpty();
+  }
   clear_value();
+  _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SQLiteField::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -693,10 +729,10 @@ const char* SQLiteField::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bytes blog = 4;
+      // bytes blob = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          auto str = _internal_mutable_blog();
+          auto str = _internal_mutable_blob();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
         } else goto handle_unusual;
@@ -706,6 +742,22 @@ const char* SQLiteField::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
           _internal_set_float_(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr));
           ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // bool null = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          _internal_set_null(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string name = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+          auto str = _internal_mutable_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "faq.SQLiteField.name"));
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -723,6 +775,7 @@ const char* SQLiteField::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
     }  // switch
   }  // while
 success:
+  _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -758,16 +811,32 @@ failure:
         3, this->_internal_string(), target);
   }
 
-  // bytes blog = 4;
-  if (_internal_has_blog()) {
+  // bytes blob = 4;
+  if (_internal_has_blob()) {
     target = stream->WriteBytesMaybeAliased(
-        4, this->_internal_blog(), target);
+        4, this->_internal_blob(), target);
   }
 
   // float float = 5;
   if (_internal_has_float_()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_float_(), target);
+  }
+
+  // bool null = 6;
+  if (_internal_has_null()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(6, this->_internal_null(), target);
+  }
+
+  // string name = 8;
+  if (_internal_has_name()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "faq.SQLiteField.name");
+    target = stream->WriteStringMaybeAliased(
+        8, this->_internal_name(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -785,6 +854,14 @@ size_t SQLiteField::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
+  // string name = 8;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_name());
+  }
 
   switch (value_case()) {
     // int32 int = 1;
@@ -808,16 +885,21 @@ size_t SQLiteField::ByteSizeLong() const {
           this->_internal_string());
       break;
     }
-    // bytes blog = 4;
-    case kBlog: {
+    // bytes blob = 4;
+    case kBlob: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
-          this->_internal_blog());
+          this->_internal_blob());
       break;
     }
     // float float = 5;
     case kFloat: {
       total_size += 1 + 4;
+      break;
+    }
+    // bool null = 6;
+    case kNull: {
+      total_size += 1 + 1;
       break;
     }
     case VALUE_NOT_SET: {
@@ -855,6 +937,9 @@ void SQLiteField::MergeFrom(const SQLiteField& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from._internal_has_name()) {
+    _internal_set_name(from._internal_name());
+  }
   switch (from.value_case()) {
     case kInt: {
       _internal_set_int_(from._internal_int_());
@@ -868,12 +953,16 @@ void SQLiteField::MergeFrom(const SQLiteField& from) {
       _internal_set_string(from._internal_string());
       break;
     }
-    case kBlog: {
-      _internal_set_blog(from._internal_blog());
+    case kBlob: {
+      _internal_set_blob(from._internal_blob());
       break;
     }
     case kFloat: {
       _internal_set_float_(from._internal_float_());
+      break;
+    }
+    case kNull: {
+      _internal_set_null(from._internal_null());
       break;
     }
     case VALUE_NOT_SET: {
@@ -903,6 +992,8 @@ bool SQLiteField::IsInitialized() const {
 void SQLiteField::InternalSwap(SQLiteField* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   swap(value_, other->value_);
   swap(_oneof_case_[0], other->_oneof_case_[0]);
 }
@@ -918,8 +1009,8 @@ PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::faq::SQLiteQueryString* Arena::CreateMaybeMessage< ::faq::SQLiteQueryString >(Arena* arena) {
   return Arena::CreateMessageInternal< ::faq::SQLiteQueryString >(arena);
 }
-template<> PROTOBUF_NOINLINE ::faq::SQLiteQuery* Arena::CreateMaybeMessage< ::faq::SQLiteQuery >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::faq::SQLiteQuery >(arena);
+template<> PROTOBUF_NOINLINE ::faq::SQLiteQueryRow* Arena::CreateMaybeMessage< ::faq::SQLiteQueryRow >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::faq::SQLiteQueryRow >(arena);
 }
 template<> PROTOBUF_NOINLINE ::faq::SQLiteField* Arena::CreateMaybeMessage< ::faq::SQLiteField >(Arena* arena) {
   return Arena::CreateMessageInternal< ::faq::SQLiteField >(arena);

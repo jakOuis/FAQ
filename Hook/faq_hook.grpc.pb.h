@@ -36,22 +36,22 @@ class FaQSQLite final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    std::unique_ptr< ::grpc::ClientReaderInterface< ::faq::SQLiteQuery>> Query(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) {
-      return std::unique_ptr< ::grpc::ClientReaderInterface< ::faq::SQLiteQuery>>(QueryRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::faq::SQLiteQueryRow>> Query(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::faq::SQLiteQueryRow>>(QueryRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQuery>> AsyncQuery(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQuery>>(AsyncQueryRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQueryRow>> AsyncQuery(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQueryRow>>(AsyncQueryRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQuery>> PrepareAsyncQuery(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQuery>>(PrepareAsyncQueryRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQueryRow>> PrepareAsyncQuery(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQueryRow>>(PrepareAsyncQueryRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::ClientReadReactor< ::faq::SQLiteQuery>* reactor) = 0;
+      virtual void Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::ClientReadReactor< ::faq::SQLiteQueryRow>* reactor) = 0;
       #else
-      virtual void Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::experimental::ClientReadReactor< ::faq::SQLiteQuery>* reactor) = 0;
+      virtual void Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::experimental::ClientReadReactor< ::faq::SQLiteQueryRow>* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -62,29 +62,29 @@ class FaQSQLite final {
     #endif
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
-    virtual ::grpc::ClientReaderInterface< ::faq::SQLiteQuery>* QueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQuery>* AsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQuery>* PrepareAsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::faq::SQLiteQueryRow>* QueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQueryRow>* AsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::faq::SQLiteQueryRow>* PrepareAsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    std::unique_ptr< ::grpc::ClientReader< ::faq::SQLiteQuery>> Query(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) {
-      return std::unique_ptr< ::grpc::ClientReader< ::faq::SQLiteQuery>>(QueryRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReader< ::faq::SQLiteQueryRow>> Query(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::faq::SQLiteQueryRow>>(QueryRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::faq::SQLiteQuery>> AsyncQuery(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::faq::SQLiteQuery>>(AsyncQueryRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::faq::SQLiteQueryRow>> AsyncQuery(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::faq::SQLiteQueryRow>>(AsyncQueryRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::faq::SQLiteQuery>> PrepareAsyncQuery(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::faq::SQLiteQuery>>(PrepareAsyncQueryRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::faq::SQLiteQueryRow>> PrepareAsyncQuery(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::faq::SQLiteQueryRow>>(PrepareAsyncQueryRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::ClientReadReactor< ::faq::SQLiteQuery>* reactor) override;
+      void Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::ClientReadReactor< ::faq::SQLiteQueryRow>* reactor) override;
       #else
-      void Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::experimental::ClientReadReactor< ::faq::SQLiteQuery>* reactor) override;
+      void Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::experimental::ClientReadReactor< ::faq::SQLiteQueryRow>* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -97,9 +97,9 @@ class FaQSQLite final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
-    ::grpc::ClientReader< ::faq::SQLiteQuery>* QueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) override;
-    ::grpc::ClientAsyncReader< ::faq::SQLiteQuery>* AsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReader< ::faq::SQLiteQuery>* PrepareAsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::faq::SQLiteQueryRow>* QueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) override;
+    ::grpc::ClientAsyncReader< ::faq::SQLiteQueryRow>* AsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::faq::SQLiteQueryRow>* PrepareAsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Query_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -108,7 +108,7 @@ class FaQSQLite final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status Query(::grpc::ServerContext* context, const ::faq::SQLiteQueryString* request, ::grpc::ServerWriter< ::faq::SQLiteQuery>* writer);
+    virtual ::grpc::Status Query(::grpc::ServerContext* context, const ::faq::SQLiteQueryString* request, ::grpc::ServerWriter< ::faq::SQLiteQueryRow>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_Query : public BaseClass {
@@ -122,11 +122,11 @@ class FaQSQLite final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQuery>* /*writer*/) override {
+    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQueryRow>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestQuery(::grpc::ServerContext* context, ::faq::SQLiteQueryString* request, ::grpc::ServerAsyncWriter< ::faq::SQLiteQuery>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestQuery(::grpc::ServerContext* context, ::faq::SQLiteQueryString* request, ::grpc::ServerAsyncWriter< ::faq::SQLiteQueryRow>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
@@ -143,7 +143,7 @@ class FaQSQLite final {
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc::internal::CallbackServerStreamingHandler< ::faq::SQLiteQueryString, ::faq::SQLiteQuery>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::faq::SQLiteQueryString, ::faq::SQLiteQueryRow>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
@@ -156,15 +156,15 @@ class FaQSQLite final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQuery>* /*writer*/) override {
+    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQueryRow>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerWriteReactor< ::faq::SQLiteQuery>* Query(
+    virtual ::grpc::ServerWriteReactor< ::faq::SQLiteQueryRow>* Query(
       ::grpc::CallbackServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/)
     #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::faq::SQLiteQuery>* Query(
+    virtual ::grpc::experimental::ServerWriteReactor< ::faq::SQLiteQueryRow>* Query(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/)
     #endif
       { return nullptr; }
@@ -186,7 +186,7 @@ class FaQSQLite final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQuery>* /*writer*/) override {
+    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQueryRow>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -203,7 +203,7 @@ class FaQSQLite final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQuery>* /*writer*/) override {
+    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQueryRow>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -236,7 +236,7 @@ class FaQSQLite final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQuery>* /*writer*/) override {
+    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQueryRow>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -258,10 +258,10 @@ class FaQSQLite final {
     WithSplitStreamingMethod_Query() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::SplitServerStreamingHandler<
-          ::faq::SQLiteQueryString, ::faq::SQLiteQuery>(
+          ::faq::SQLiteQueryString, ::faq::SQLiteQueryRow>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerSplitStreamer<
-                     ::faq::SQLiteQueryString, ::faq::SQLiteQuery>* streamer) {
+                     ::faq::SQLiteQueryString, ::faq::SQLiteQueryRow>* streamer) {
                        return this->StreamedQuery(context,
                          streamer);
                   }));
@@ -270,12 +270,12 @@ class FaQSQLite final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQuery>* /*writer*/) override {
+    ::grpc::Status Query(::grpc::ServerContext* /*context*/, const ::faq::SQLiteQueryString* /*request*/, ::grpc::ServerWriter< ::faq::SQLiteQueryRow>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with split streamed
-    virtual ::grpc::Status StreamedQuery(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::faq::SQLiteQueryString,::faq::SQLiteQuery>* server_split_streamer) = 0;
+    virtual ::grpc::Status StreamedQuery(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::faq::SQLiteQueryString,::faq::SQLiteQueryRow>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_Query<Service > SplitStreamedService;
   typedef WithSplitStreamingMethod_Query<Service > StreamedService;

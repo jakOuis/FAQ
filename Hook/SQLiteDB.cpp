@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "SQLiteDB.h"
-#include "Utils.h"
 #include "Mutex.h"
 #include <set>
+#include <grpcpp/grpcpp.h>
 
 #include "ModuleHook.h"
 #include "SQLiteQuery.h"
-
+#include "SQLRpc.h"
+#include "Utils.h"
 
 
 int SQLite3DB_execDML(void* self, const char* sql, int* error);
@@ -138,77 +139,87 @@ __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql,
             {
                 queryed = true;
 
-                HookSQLite3Query queryWrap = HookSQLite3Query();
-                int err;
-                auto result = this->execQuery(
-                    queryWrap.innerPtr,
-                    "SELECT * FROM 'group_665155905' ORDER BY Time DESC LIMIT 20;",
-                    &err);
+                SQLRpc service(this);
+                grpc::ServerBuilder builder;
+                builder.AddListeningPort("0.0.0.0:47382", grpc::InsecureServerCredentials());
+                builder.RegisterService(&service);
+                auto server = builder.BuildAndStart();
+
+                logf("SQLite server listening on 0.0.0.0:47382");
                 
-                logf("query out %d, return %d, query %p", err, result, &queryWrap.innerPtr);
-                const uint8_t* valueBuf = nullptr;
-                char formatBuffer[16384];
-                bool firstLine = true;
-                while (!queryWrap.eof())
-                {
-                    logf("!eof");
-                    auto count = queryWrap.numFields();
-                    logf("Nums of row: %d", count);
-                    for (auto i = 0; i < count; i++)
-                    {
-                        auto type = queryWrap.fieldDataType(i);
-                        auto name = queryWrap.fieldName(i);
-                        switch (type)
-                        {
-                        case SQLITE_INTEGER:
-                            logf("%s Int: %d", name, queryWrap.getIntField(i, -1));
-                            break;
-                        case SQLITE_FLOAT:
-                            logf("%s Float: %lf", name, queryWrap.getFloatField(i, -1));
-                            break;
-                        case SQLITE_TEXT:
-                            logf("%s String: %s", name, queryWrap.getStringField(i, "<?null>"));
-                            break;
-                        case SQLITE_BLOB:
-                            {
-                                int size;
-                                valueBuf = queryWrap.getBlobField(i, &size);
-                                logf("%s Blob(%d)", name, size);
-                                // auto ptr = formatBuffer;
-                                // for(int j=0;j<size; j+= 4)
-                                // {
-                                //     unsigned int hex = *(int*)(valueBuf+ j);
-                                //     ptr += sprintf_s(ptr,
-                                //         16384 - (ptr - formatBuffer),
-                                //         "%02x%02x%02x%02x",
-                                //         (hex & 0xFF) >> 0,
-                                //         (hex & 0xFF00) >> 8,
-                                //         (hex & 0xFF0000) >> 16,
-                                //         (hex & 0xFF000000) >> 24);
-                                // }
-                                // log((const char*)valueBuf, size);
-                                // log(formatBuffer, size * 2);
-                                // valueBuf += 4 *8;
-                                // logf("%08x %08x %08x %08x  %08x %08x %08x %08x",
-                                //     ((int*)valueBuf)[0],((int*)valueBuf)[1],((int*)valueBuf)[2],((int*)valueBuf)[3],
-                                //     ((int*)valueBuf)[4],((int*)valueBuf)[5],((int*)valueBuf)[6],((int*)valueBuf)[7]);
-                                break;
-                            }
-                        case SQLITE_NULL:
-                            logf("%s Null", name);
-                            break;
-                        default:
-                            logf("%s Unknown type", name);
-                        }
-                    }
-                    return 0;
+                server->Wait();
 
-                    // Sleep(1000);
-
-                    queryWrap.nextRow();
-                }
-
-                return 0;
+                // HookSQLite3Query queryWrap = HookSQLite3Query();
+                // int err;
+                // auto result = this->execQuery(
+                //     queryWrap.innerPtr,
+                //     "SELECT * FROM 'group_665155905' ORDER BY Time DESC LIMIT 20;",
+                //     &err);
+                //
+                // logf("query out %d, return %d, query %p", err, result, &queryWrap.innerPtr);
+                // const uint8_t* valueBuf = nullptr;
+                // char formatBuffer[16384];
+                // bool firstLine = true;
+                // while (!queryWrap.eof())
+                // {
+                //     logf("!eof");
+                //     auto count = queryWrap.numFields();
+                //     logf("Nums of row: %d", count);
+                //     for (auto i = 0; i < count; i++)
+                //     {
+                //         auto type = queryWrap.fieldDataType(i);
+                //         auto name = queryWrap.fieldName(i);
+                //         switch (type)
+                //         {
+                //         case SQLITE_INTEGER:
+                //             logf("%s Int: %d", name, queryWrap.getIntField(i, -1));
+                //             break;
+                //         case SQLITE_FLOAT:
+                //             logf("%s Float: %lf", name, queryWrap.getFloatField(i, -1));
+                //             break;
+                //         case SQLITE_TEXT:
+                //             logf("%s String: %s", name, queryWrap.getStringField(i, "<?null>"));
+                //             break;
+                //         case SQLITE_BLOB:
+                //             {
+                //                 int size;
+                //                 valueBuf = queryWrap.getBlobField(i, &size);
+                //                 logf("%s Blob(%d)", name, size);
+                //                 // auto ptr = formatBuffer;
+                //                 // for(int j=0;j<size; j+= 4)
+                //                 // {
+                //                 //     unsigned int hex = *(int*)(valueBuf+ j);
+                //                 //     ptr += sprintf_s(ptr,
+                //                 //         16384 - (ptr - formatBuffer),
+                //                 //         "%02x%02x%02x%02x",
+                //                 //         (hex & 0xFF) >> 0,
+                //                 //         (hex & 0xFF00) >> 8,
+                //                 //         (hex & 0xFF0000) >> 16,
+                //                 //         (hex & 0xFF000000) >> 24);
+                //                 // }
+                //                 // log((const char*)valueBuf, size);
+                //                 // log(formatBuffer, size * 2);
+                //                 // valueBuf += 4 *8;
+                //                 // logf("%08x %08x %08x %08x  %08x %08x %08x %08x",
+                //                 //     ((int*)valueBuf)[0],((int*)valueBuf)[1],((int*)valueBuf)[2],((int*)valueBuf)[3],
+                //                 //     ((int*)valueBuf)[4],((int*)valueBuf)[5],((int*)valueBuf)[6],((int*)valueBuf)[7]);
+                //                 break;
+                //             }
+                //         case SQLITE_NULL:
+                //             logf("%s Null", name);
+                //             break;
+                //         default:
+                //             logf("%s Unknown type", name);
+                //         }
+                //     }
+                //     return 0;
+                //
+                //     // Sleep(1000);
+                //
+                //     queryWrap.nextRow();
+                // }
+                //
+                // return 0;
             }
         }
     }

@@ -33,7 +33,7 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-#define PROTOBUF_INTERNAL_EXPORT_faq_5fhook_2eproto FAQ_PROTOS
+#define PROTOBUF_INTERNAL_EXPORT_faq_5fhook_2eproto
 PROTOBUF_NAMESPACE_OPEN
 namespace internal {
 class AnyMetadata;
@@ -41,7 +41,7 @@ class AnyMetadata;
 PROTOBUF_NAMESPACE_CLOSE
 
 // Internal implementation detail -- do not use these members.
-struct FAQ_PROTOS TableStruct_faq_5fhook_2eproto {
+struct TableStruct_faq_5fhook_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTableField entries[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
@@ -52,28 +52,28 @@ struct FAQ_PROTOS TableStruct_faq_5fhook_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
-extern FAQ_PROTOS const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_faq_5fhook_2eproto;
+extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_faq_5fhook_2eproto;
 namespace faq {
 class SQLiteField;
 class SQLiteFieldDefaultTypeInternal;
-FAQ_PROTOS extern SQLiteFieldDefaultTypeInternal _SQLiteField_default_instance_;
+extern SQLiteFieldDefaultTypeInternal _SQLiteField_default_instance_;
 class SQLiteQueryRow;
 class SQLiteQueryRowDefaultTypeInternal;
-FAQ_PROTOS extern SQLiteQueryRowDefaultTypeInternal _SQLiteQueryRow_default_instance_;
+extern SQLiteQueryRowDefaultTypeInternal _SQLiteQueryRow_default_instance_;
 class SQLiteQueryString;
 class SQLiteQueryStringDefaultTypeInternal;
-FAQ_PROTOS extern SQLiteQueryStringDefaultTypeInternal _SQLiteQueryString_default_instance_;
+extern SQLiteQueryStringDefaultTypeInternal _SQLiteQueryString_default_instance_;
 }  // namespace faq
 PROTOBUF_NAMESPACE_OPEN
-template<> FAQ_PROTOS ::faq::SQLiteField* Arena::CreateMaybeMessage<::faq::SQLiteField>(Arena*);
-template<> FAQ_PROTOS ::faq::SQLiteQueryRow* Arena::CreateMaybeMessage<::faq::SQLiteQueryRow>(Arena*);
-template<> FAQ_PROTOS ::faq::SQLiteQueryString* Arena::CreateMaybeMessage<::faq::SQLiteQueryString>(Arena*);
+template<> ::faq::SQLiteField* Arena::CreateMaybeMessage<::faq::SQLiteField>(Arena*);
+template<> ::faq::SQLiteQueryRow* Arena::CreateMaybeMessage<::faq::SQLiteQueryRow>(Arena*);
+template<> ::faq::SQLiteQueryString* Arena::CreateMaybeMessage<::faq::SQLiteQueryString>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace faq {
 
 // ===================================================================
 
-class FAQ_PROTOS SQLiteQueryString PROTOBUF_FINAL :
+class SQLiteQueryString PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:faq.SQLiteQueryString) */ {
  public:
   inline SQLiteQueryString() : SQLiteQueryString(nullptr) {}
@@ -216,7 +216,7 @@ class FAQ_PROTOS SQLiteQueryString PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class FAQ_PROTOS SQLiteQueryRow PROTOBUF_FINAL :
+class SQLiteQueryRow PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:faq.SQLiteQueryRow) */ {
  public:
   inline SQLiteQueryRow() : SQLiteQueryRow(nullptr) {}
@@ -361,7 +361,7 @@ class FAQ_PROTOS SQLiteQueryRow PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class FAQ_PROTOS SQLiteField PROTOBUF_FINAL :
+class SQLiteField PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:faq.SQLiteField) */ {
  public:
   inline SQLiteField() : SQLiteField(nullptr) {}

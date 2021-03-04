@@ -21,10 +21,16 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="faq_client.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="faq_hook.grpc.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="faq_hook.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="faq_client.grpc.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,10 +41,16 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="faq_hook.pb.cc">
+    <ClCompile Include="faq_client.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="faq_hook.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="faq_hook.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="faq_client.grpc.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

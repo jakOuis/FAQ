@@ -35,31 +35,31 @@ FaQSQLite::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_Query_(FaQSQLite_method_names[0], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
-::grpc::ClientReader< ::faq::SQLiteQuery>* FaQSQLite::Stub::QueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) {
-  return ::grpc::internal::ClientReaderFactory< ::faq::SQLiteQuery>::Create(channel_.get(), rpcmethod_Query_, context, request);
+::grpc::ClientReader< ::faq::SQLiteQueryRow>* FaQSQLite::Stub::QueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) {
+  return ::grpc::internal::ClientReaderFactory< ::faq::SQLiteQueryRow>::Create(channel_.get(), rpcmethod_Query_, context, request);
 }
 
-void FaQSQLite::Stub::experimental_async::Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::experimental::ClientReadReactor< ::faq::SQLiteQuery>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::faq::SQLiteQuery>::Create(stub_->channel_.get(), stub_->rpcmethod_Query_, context, request, reactor);
+void FaQSQLite::Stub::experimental_async::Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::experimental::ClientReadReactor< ::faq::SQLiteQueryRow>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::faq::SQLiteQueryRow>::Create(stub_->channel_.get(), stub_->rpcmethod_Query_, context, request, reactor);
 }
 
-::grpc::ClientAsyncReader< ::faq::SQLiteQuery>* FaQSQLite::Stub::AsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::faq::SQLiteQuery>::Create(channel_.get(), cq, rpcmethod_Query_, context, request, true, tag);
+::grpc::ClientAsyncReader< ::faq::SQLiteQueryRow>* FaQSQLite::Stub::AsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::faq::SQLiteQueryRow>::Create(channel_.get(), cq, rpcmethod_Query_, context, request, true, tag);
 }
 
-::grpc::ClientAsyncReader< ::faq::SQLiteQuery>* FaQSQLite::Stub::PrepareAsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::faq::SQLiteQuery>::Create(channel_.get(), cq, rpcmethod_Query_, context, request, false, nullptr);
+::grpc::ClientAsyncReader< ::faq::SQLiteQueryRow>* FaQSQLite::Stub::PrepareAsyncQueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::faq::SQLiteQueryRow>::Create(channel_.get(), cq, rpcmethod_Query_, context, request, false, nullptr);
 }
 
 FaQSQLite::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FaQSQLite_method_names[0],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
-      new ::grpc::internal::ServerStreamingHandler< FaQSQLite::Service, ::faq::SQLiteQueryString, ::faq::SQLiteQuery>(
+      new ::grpc::internal::ServerStreamingHandler< FaQSQLite::Service, ::faq::SQLiteQueryString, ::faq::SQLiteQueryRow>(
           [](FaQSQLite::Service* service,
              ::grpc::ServerContext* ctx,
              const ::faq::SQLiteQueryString* req,
-             ::grpc::ServerWriter<::faq::SQLiteQuery>* writer) {
+             ::grpc::ServerWriter<::faq::SQLiteQueryRow>* writer) {
                return service->Query(ctx, req, writer);
              }, this)));
 }
@@ -67,7 +67,7 @@ FaQSQLite::Service::Service() {
 FaQSQLite::Service::~Service() {
 }
 
-::grpc::Status FaQSQLite::Service::Query(::grpc::ServerContext* context, const ::faq::SQLiteQueryString* request, ::grpc::ServerWriter< ::faq::SQLiteQuery>* writer) {
+::grpc::Status FaQSQLite::Service::Query(::grpc::ServerContext* context, const ::faq::SQLiteQueryString* request, ::grpc::ServerWriter< ::faq::SQLiteQueryRow>* writer) {
   (void) context;
   (void) request;
   (void) writer;

@@ -1,0 +1,29 @@
+syntax="proto3";
+
+package faq_client;
+
+service Client {
+    rpc Log(LogMsg) returns (Empty) {}
+    rpc Init(InitRequest) returns (InitResponse) {}
+}
+
+message Empty {
+
+}
+
+message LogMsg
+{
+    int32 pid = 1;
+    string message = 2;
+}
+
+message InitRequest
+{
+    int32 pid = 1;
+    string name = 2;
+}
+
+message InitResponse
+{
+    bool enable = 1;
+}

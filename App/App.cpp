@@ -7,10 +7,19 @@
 #include <strsafe.h>
 #include <TlHelp32.h>
 #include <vector>
+#include <grpcpp/grpcpp.h>
+#include <grpcpp/impl/codegen/client_context.h>
 
+
+#define FAQ_PROTOS __declspec(dllimport)
+
+#include "faq_hook.grpc.pb.h"
+#include "faq_hook.pb.h"
 #include "Utils.h"
 
-#pragma comment(lib, Dbghelp.lib)
+#pragma comment(lib, "Ws2_32.lib")
+
+using namespace std;
 
 int main()
 {
@@ -60,9 +69,65 @@ int main()
     }
     printf("Hooked.\n");
 
+    printf("Connecting to hook sql server...\n");
+    auto stub = faq::FaQSQLite::Stub(grpc::CreateChannel("localhost:47382", grpc::InsecureChannelCredentials()));
+
     while (true)
     {
-        getchar();
+        string sql;
+        cout << "sql >";
+        cin >> sql;
+        grpc::ClientContext context;
+        faq::SQLiteQueryString query;
+        query.set_sql(sql);
+        auto reader = stub.Query(&context, query);
+        faq::SQLiteQueryRow row;
+        bool firstRow = false;
+        
+        while(reader->Read(&row))
+        {
+            if(firstRow)
+            {
+                for(auto& field :row.fields())
+                {
+                    printf("%16s, ", field.name().c_str());
+                }
+                printf("\n");
+            }
+            for(auto field : row.fields())
+            {
+                char formatBuf[1024];
+                size_t length;
+                switch(field.value_case())
+                {
+                    case faq::SQLiteField::kNull:
+                        printf("%16s, ", field.null() ? "NULL": "UNKNOWN");
+                        break;
+                    case faq::SQLiteField::kInt:
+                        printf("%16d, ", field.int_());
+                        break;
+                    case faq::SQLiteField::kInt64:
+                        printf("%16lld, ", field.int64());
+                        break;
+                    case faq::SQLiteField::kFloat:
+                        printf("%16lf, ", field.float_());
+                        break;
+                    case faq::SQLiteField::kString:
+                        printf("%16s, ", field.string().c_str());
+                        break;
+                    case faq::SQLiteField::kBlob:
+                        length = sprintf_s(formatBuf, sizeof(formatBuf), "Blob(%d)", field.blob().size());
+                        formatBuf[length] = 0;
+                        printf("%16s, ", formatBuf);
+                        break;
+                case faq::SQLiteField::VALUE_NOT_SET:
+                    printf("%16s, ", "NOT_SET");
+                    break;
+                }
+            }
+            
+            firstRow = false;
+        }
     }
 }
 

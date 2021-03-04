@@ -39,7 +39,7 @@ static void InitDefaultsscc_info_SQLiteField_faq_5fhook_2eproto() {
   }
 }
 
-FAQ_PROTOS ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SQLiteField_faq_5fhook_2eproto =
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SQLiteField_faq_5fhook_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SQLiteField_faq_5fhook_2eproto}, {}};
 
 static void InitDefaultsscc_info_SQLiteQueryRow_faq_5fhook_2eproto() {
@@ -52,7 +52,7 @@ static void InitDefaultsscc_info_SQLiteQueryRow_faq_5fhook_2eproto() {
   }
 }
 
-FAQ_PROTOS ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SQLiteQueryRow_faq_5fhook_2eproto =
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SQLiteQueryRow_faq_5fhook_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SQLiteQueryRow_faq_5fhook_2eproto}, {
       &scc_info_SQLiteField_faq_5fhook_2eproto.base,}};
 
@@ -66,7 +66,7 @@ static void InitDefaultsscc_info_SQLiteQueryString_faq_5fhook_2eproto() {
   }
 }
 
-FAQ_PROTOS ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SQLiteQueryString_faq_5fhook_2eproto =
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SQLiteQueryString_faq_5fhook_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SQLiteQueryString_faq_5fhook_2eproto}, {}};
 
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_faq_5fhook_2eproto[3];
