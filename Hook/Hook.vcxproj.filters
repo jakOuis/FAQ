@@ -33,10 +33,13 @@
     <ClInclude Include="ModuleHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rpc\faq_hook.pb.h">
+    <ClInclude Include="SQLiteQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rpc\faq_hook.grpc.pb.h">
+    <ClInclude Include="SQLRpc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLiteDB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -54,6 +57,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mutex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteQuery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLRpc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteDB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

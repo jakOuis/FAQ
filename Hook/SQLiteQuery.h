@@ -12,7 +12,12 @@
 __declspec(dllexport) class HookSQLite3Query
 {
 public:
-    __declspec(dllexport) HookSQLite3Query(void* self): selfPtr(self){}
+    HookSQLite3Query();
+    ~HookSQLite3Query();
+    
+    void* innerPtr;
+    
+    // __declspec(dllexport) HookSQLite3Query(void* self): innerPtr(self){}
     __declspec(dllexport) static void initLib(HMODULE hMod);
     __declspec(dllexport) void nextRow();
     __declspec(dllexport) bool eof();
@@ -25,6 +30,4 @@ public:
     __declspec(dllexport) int64_t getInt64Field(int idx, int64_t defaultValue);
     __declspec(dllexport) int getIntField(int idx, int defaultValue);
     __declspec(dllexport) const char* getStringField(int idx, const char* defaultValue);
-private:
-    void* selfPtr;
 };

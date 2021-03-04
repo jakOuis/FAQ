@@ -30,10 +30,23 @@ __declspec(dllexport) void HookSQLite3Query::initLib(HMODULE hMod)
     logf("get %p", SQLite3Query_getStringField = GetProcAddress(hMod, "?getStringField@CppSQLite3Query@@QAEPBDHPBD@Z"));
 }
 
+// Will link with _malloc in DetoursNT.cpp
+void* __cdecl malloc(size_t size);
+void __cdecl free(void* ptr);
+
+HookSQLite3Query::HookSQLite3Query(): innerPtr(nullptr)
+{
+    innerPtr = malloc(16384);
+}
+
+HookSQLite3Query::~HookSQLite3Query()
+{
+    free(innerPtr);
+}
 
 __declspec(dllexport) void HookSQLite3Query::nextRow()
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     __asm {
         mov ecx, self
         call SQLite3Query_nextRow
@@ -42,7 +55,7 @@ __declspec(dllexport) void HookSQLite3Query::nextRow()
 
 __declspec(dllexport) bool HookSQLite3Query::eof()
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     bool result;
     __asm {
         mov ecx, self
@@ -54,7 +67,7 @@ __declspec(dllexport) bool HookSQLite3Query::eof()
 
 __declspec(dllexport) int HookSQLite3Query::numFields()
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     int result;
     __asm {
         mov ecx, self
@@ -66,7 +79,7 @@ __declspec(dllexport) int HookSQLite3Query::numFields()
 
 __declspec(dllexport) const char* HookSQLite3Query::fieldName(int idx)
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     const char* result;
     __asm {
         push idx
@@ -79,7 +92,7 @@ __declspec(dllexport) const char* HookSQLite3Query::fieldName(int idx)
 
 __declspec(dllexport) int HookSQLite3Query::fieldDataType(int idx)
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     int result;
     __asm {
         push idx
@@ -92,7 +105,7 @@ __declspec(dllexport) int HookSQLite3Query::fieldDataType(int idx)
 
 __declspec(dllexport) bool HookSQLite3Query::fieldIsNull(int idx)
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     bool result;
     __asm {
         push idx
@@ -105,7 +118,7 @@ __declspec(dllexport) bool HookSQLite3Query::fieldIsNull(int idx)
 
 __declspec(dllexport) const uint8_t* HookSQLite3Query::getBlobField(int idx, int* sizeOut)
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     const uint8_t* result;
     __asm {
         push sizeOut
@@ -119,7 +132,7 @@ __declspec(dllexport) const uint8_t* HookSQLite3Query::getBlobField(int idx, int
 
 __declspec(dllexport) double HookSQLite3Query::getFloatField(int idx, double defaultValue)
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     double result;
     __asm {
         movsd xmm0, defaultValue
@@ -138,7 +151,7 @@ __declspec(dllexport) double HookSQLite3Query::getFloatField(int idx, double def
 
 __declspec(dllexport) int64_t HookSQLite3Query::getInt64Field(int idx, int64_t defaultValue)
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     int64_t result;
     __asm {
         push dword ptr [defaultValue + 4]
@@ -154,7 +167,7 @@ __declspec(dllexport) int64_t HookSQLite3Query::getInt64Field(int idx, int64_t d
 
 __declspec(dllexport) int HookSQLite3Query::getIntField(int idx, int defaultValue)
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     int result;
     __asm {
         push defaultValue
@@ -168,7 +181,7 @@ __declspec(dllexport) int HookSQLite3Query::getIntField(int idx, int defaultValu
 
 __declspec(dllexport) const char* HookSQLite3Query::getStringField(int idx, const char* defaultValue)
 {
-    void* self = this->selfPtr;
+    void* self = this->innerPtr;
     const char* result;
     __asm {
         push defaultValue
