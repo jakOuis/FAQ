@@ -19,6 +19,7 @@
 #include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/sync_stream.h>
+#include "../thirdparty/grpc/src/core/lib/iomgr/exec_ctx.h";
 namespace faq {
 
 static const char* FaQSQLite_method_names[] = {
@@ -36,10 +37,13 @@ FaQSQLite::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   {}
 
 ::grpc::ClientReader< ::faq::SQLiteQueryRow>* FaQSQLite::Stub::QueryRaw(::grpc::ClientContext* context, const ::faq::SQLiteQueryString& request) {
+  grpc_core::ExecCtx ctx;
   return ::grpc::internal::ClientReaderFactory< ::faq::SQLiteQueryRow>::Create(channel_.get(), rpcmethod_Query_, context, request);
 }
 
+
 void FaQSQLite::Stub::experimental_async::Query(::grpc::ClientContext* context, ::faq::SQLiteQueryString* request, ::grpc::experimental::ClientReadReactor< ::faq::SQLiteQueryRow>* reactor) {
+    grpc_core::ExecCtx ctx;
   ::grpc::internal::ClientCallbackReaderFactory< ::faq::SQLiteQueryRow>::Create(stub_->channel_.get(), stub_->rpcmethod_Query_, context, request, reactor);
 }
 

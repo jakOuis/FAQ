@@ -7,6 +7,7 @@
 
 #include "faq_hook.pb.h"
 #include "SQLiteQuery.h"
+#include "Utils.h"
 
 using namespace std;
 
@@ -19,12 +20,17 @@ struct FieldInfo
 
 ::grpc::Status SQLRpc::Query(::grpc::ServerContext* context, const ::faq::SQLiteQueryString* request, ::grpc::ServerWriter<::faq::SQLiteQueryRow>* writer)
 {
+    logf("Call to query");
+
     auto query = HookSQLite3Query();
     int result;
     db->execQuery(query.innerPtr, request->sql().c_str(), &result);
     int fieldCount = 0;
     bool firstRow = true;
     vector<string> fieldNames;
+
+    logf("SQL: %s", request->sql().c_str());
+    logf("Result: %d", result);
     if (result == SQLITE_ROW || result == SQLITE_OK)
     {
         while(!query.eof())

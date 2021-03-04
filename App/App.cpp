@@ -70,7 +70,15 @@ int main()
     printf("Hooked.\n");
 
     printf("Connecting to hook sql server...\n");
-    auto stub = faq::FaQSQLite::Stub(grpc::CreateChannel("localhost:47382", grpc::InsecureChannelCredentials()));
+    auto channel = grpc::CreateChannel("localhost:47382", grpc::InsecureChannelCredentials());
+
+    while (channel->GetState(true) != grpc_connectivity_state::GRPC_CHANNEL_READY)
+    {
+        printf("Connecting to hook sql server...\n");
+        channel->WaitForConnected(chrono::system_clock::now() + chrono::seconds(3));
+    }
+
+    auto stub = faq::FaQSQLite::Stub(channel);
 
     while (true)
     {

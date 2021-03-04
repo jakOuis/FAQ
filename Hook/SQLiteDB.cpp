@@ -149,6 +149,8 @@ __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql,
                 
                 server->Wait();
 
+                logf("Server down");
+
                 // HookSQLite3Query queryWrap = HookSQLite3Query();
                 // int err;
                 // auto result = this->execQuery(
