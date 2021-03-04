@@ -1,6 +1,7 @@
 // App.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include "TCPClient.h"
 #include <iostream>
 #include <cstdio>
 #include <Windows.h>
@@ -69,31 +70,46 @@ int main()
     }
     printf("Hooked.\n");
 
-    printf("Connecting to hook sql server...\n");
-    auto channel = grpc::CreateChannel("localhost:47382", grpc::InsecureChannelCredentials());
-
-    while (channel->GetState(true) != grpc_connectivity_state::GRPC_CHANNEL_READY)
+    TCPClient client;
+ReConnect:
+    do
     {
         printf("Connecting to hook sql server...\n");
-        channel->WaitForConnected(chrono::system_clock::now() + chrono::seconds(3));
-    }
-
-    auto stub = faq::FaQSQLite::Stub(channel);
+    } while(!client.connect("localhost", "47382"));
+    
+    char buf[1024];
+    cin.getline(buf, sizeof(buf));
 
     while (true)
     {
-        string sql;
         cout << "sql >";
-        cin >> sql;
-        grpc::ClientContext context;
-        faq::SQLiteQueryString query;
-        query.set_sql(sql);
-        auto reader = stub.Query(&context, query);
-        faq::SQLiteQueryRow row;
-        bool firstRow = false;
+        cin.getline(buf, sizeof(buf));
+        auto sql = string(buf);
+        if(!client.send(sql))
+            goto ReConnect;
+
+        int result;
+        if(!client.recv<int>(result))
+            goto ReConnect;
+
+        printf("Execute with result %d\n", result);
         
-        while(reader->Read(&row))
+        bool firstRow = true;
+        while(true)
         {
+            string raw;
+            if(!client.recv(raw))
+                goto ReConnect;
+            if(raw.size() == 0)
+            {
+                printf("<EOF>\n");
+                break;
+            }
+            
+            faq::SQLiteQueryRow row;
+            row.ParseFromString(raw);
+
+            
             if(firstRow)
             {
                 for(auto& field :row.fields())
@@ -133,6 +149,7 @@ int main()
                     break;
                 }
             }
+            printf("\n");
             
             firstRow = false;
         }

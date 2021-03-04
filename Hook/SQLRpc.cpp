@@ -2,7 +2,7 @@
 #include "SQLRpc.h"
 
 #include <vector>
-
+#include <string>
 
 
 #include "faq_hook.pb.h"
@@ -18,19 +18,54 @@ struct FieldInfo
     int type;
 };
 
-::grpc::Status SQLRpc::Query(::grpc::ServerContext* context, const ::faq::SQLiteQueryString* request, ::grpc::ServerWriter<::faq::SQLiteQueryRow>* writer)
+void SQLRpc::serve()
+{
+    if(!server.listen())
+        return;
+    while(true)
+    {
+        server.waitClient();
+
+        while(true)
+        {
+            string sql;
+            logf("Wait for next query");
+            if(!server.recv(sql))
+                break;
+            logf("Recv SQL: %s", sql.c_str());
+
+            if(!query(sql))
+                break;
+            logf("Complete query");
+        }
+    }
+    
+}
+
+bool SQLRpc::sendQueryRow(const faq::SQLiteQueryRow& row)
+{
+    string output;
+    row.SerializeToString(&output);
+    return server.send(output);
+}
+
+
+
+bool SQLRpc::query(string sql)
 {
     logf("Call to query");
 
     auto query = HookSQLite3Query();
     int result;
-    db->execQuery(query.innerPtr, request->sql().c_str(), &result);
+    db->execQuery(query.innerPtr, sql.c_str(), &result);
     int fieldCount = 0;
     bool firstRow = true;
     vector<string> fieldNames;
 
-    logf("SQL: %s", request->sql().c_str());
+    logf("SQL: %s", sql.c_str());
     logf("Result: %d", result);
+    if(!server.send<int>(result))
+        return false;
     if (result == SQLITE_ROW || result == SQLITE_OK)
     {
         while(!query.eof())
@@ -40,7 +75,11 @@ struct FieldInfo
             {
                 fieldCount = query.numFields();
                 for(int i = 0; i < fieldCount; i ++)
-                    fieldNames.push_back(string(query.fieldName(i)));
+                {
+                    auto name = query.fieldName(i);
+                    logf("[%d] Name %s", i, name);
+                    fieldNames.push_back(string(name));   
+                }
             }
 
             for(int idx = 0; idx < fieldCount; idx++)
@@ -48,8 +87,11 @@ struct FieldInfo
                 auto resultField = resultRow.add_fields();
                 
                 if(firstRow)
+                {
                     resultField->set_name(fieldNames[idx]);
+                }
                 auto type = query.fieldDataType(idx);
+                logf("[%d] Type %d", idx, type);
                 switch (type)
                 {
                     case SQLITE_INTEGER:
@@ -82,10 +124,12 @@ struct FieldInfo
 
             firstRow = false;
             query.nextRow();
-            writer->Write(resultRow);
+            sendQueryRow(resultRow);
         }
-        
     }
-
-    return grpc::Status::OK;
+    
+    if(!server.send<int>(0))
+        return false;
+    
+    return true;
 }

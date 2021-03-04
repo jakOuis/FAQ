@@ -140,14 +140,9 @@ __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql,
                 queryed = true;
 
                 SQLRpc service(this);
-                grpc::ServerBuilder builder;
-                builder.AddListeningPort("0.0.0.0:47382", grpc::InsecureServerCredentials());
-                builder.RegisterService(&service);
-                auto server = builder.BuildAndStart();
-
-                logf("SQLite server listening on 0.0.0.0:47382");
                 
-                server->Wait();
+                logf("server start on 0.0.0.0:47382");
+                service.serve();
 
                 logf("Server down");
 

@@ -2,12 +2,15 @@
 
 #include "faq_hook.grpc.pb.h"
 #include "SQLiteDB.h"
+#include "TcpServer.h"
 
-class SQLRpc final : public faq::FaQSQLite::Service
+class SQLRpc
 {
 public:
     HookSQLite3DB* db;
-    SQLRpc(HookSQLite3DB* db) : db(db){}
-    ::grpc::Status Query(::grpc::ServerContext* context, const ::faq::SQLiteQueryString* request,
-        ::grpc::ServerWriter<::faq::SQLiteQueryRow>* writer) override;
+    TcpServer server;
+    SQLRpc(HookSQLite3DB* db): db(db), server("0.0.0.0", "47382"){}
+    void serve();
+    bool query(std::string sql);
+    bool sendQueryRow(const faq::SQLiteQueryRow&  row);
 };
