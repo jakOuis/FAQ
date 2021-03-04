@@ -23,6 +23,8 @@ DWORD WINAPI thread_func(LPVOID lpParam);
 void log(std::string text);
 bool loaded = false;
 
+void* _malloc(size_t size);
+
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -145,6 +147,7 @@ public:
     __declspec(dllexport) int execQuery(void* query, const char *sql, int *errOut)
     {
         static bool queryed = false;
+        
         {
             auto guard = SQLite3DBPointers.lock();
             if(guard->find(this) != guard->end())
@@ -156,10 +159,12 @@ public:
 
                     char query[8192];
                     int err;
-                    auto result = this->execQuery(&query, "SELECT * FROM 'group_665155905' limit 10", &err);
+                    auto result = this->execQuery(&query, "SELECT * FROM 'group_665155905' ORDER BY Time DESC LIMIT 20;", &err);
                     logf("query out %d, return %d, query %p", err, result, &query);
                     auto queryWrap = HookSQLite3Query(&query);
                     const uint8_t* valueBuf = nullptr;
+                    char formatBuffer[16384];
+                    bool firstLine = true;
                     while(!queryWrap.eof())
                     {
                         logf("!eof");
@@ -168,36 +173,60 @@ public:
                         for(auto i = 0; i < count; i++)
                         {
                             auto type = queryWrap.fieldDataType(i);
+                            auto name = queryWrap.fieldName(i);
                             switch(type)
                             {
                                 case SQLITE_INTEGER:
-                                    logf("Int: %d", queryWrap.getIntField(i, -1));
+                                    logf("%s Int: %d", name, queryWrap.getIntField(i, -1));
                                     break;
                                 case SQLITE_FLOAT:
-                                    logf("Float: %lf", queryWrap.getFloatField(i, -1));
+                                    logf("%s Float: %lf", name, queryWrap.getFloatField(i, -1));
                                     break;
                                 case SQLITE_TEXT:
-                                    logf("String: %s", queryWrap.getStringField(i, "<?null>"));
+                                    logf("%s String: %s", name, queryWrap.getStringField(i, "<?null>"));
                                     break;
                                 case SQLITE_BLOB:
+                                {
                                     int size;
                                     valueBuf = queryWrap.getBlobField(i, &size);
-                                    logf("Blob:");
-                                    log((const char *)valueBuf, size);
+                                    logf("%s Blob(%d)", name, size);
+                                    // auto ptr = formatBuffer;
+                                    // for(int j=0;j<size; j+= 4)
+                                    // {
+                                    //     unsigned int hex = *(int*)(valueBuf+ j);
+                                    //     ptr += sprintf_s(ptr,
+                                    //         16384 - (ptr - formatBuffer),
+                                    //         "%02x%02x%02x%02x",
+                                    //         (hex & 0xFF) >> 0,
+                                    //         (hex & 0xFF00) >> 8,
+                                    //         (hex & 0xFF0000) >> 16,
+                                    //         (hex & 0xFF000000) >> 24);
+                                    // }
+                                    // log((const char*)valueBuf, size);
+                                    // log(formatBuffer, size * 2);
+                                    // valueBuf += 4 *8;
+                                    // logf("%08x %08x %08x %08x  %08x %08x %08x %08x",
+                                    //     ((int*)valueBuf)[0],((int*)valueBuf)[1],((int*)valueBuf)[2],((int*)valueBuf)[3],
+                                    //     ((int*)valueBuf)[4],((int*)valueBuf)[5],((int*)valueBuf)[6],((int*)valueBuf)[7]);
                                     break;
+                                }
                                 case SQLITE_NULL:
-                                    logf("Null");
+                                    logf("%s Null", name);
                                     break;
                                 default:
-                                    logf("Unknown type");
+                                    logf("%s Unknown type", name);
                             }
                             
+                            
                         }
+                            return 0;
 
-                        Sleep(1000);
+                        // Sleep(1000);
                     
                         queryWrap.nextRow();
                     }
+                    
+                    return 0;
                 }
                 
             }
