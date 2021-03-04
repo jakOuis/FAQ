@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package faq;
+
+service FaQSQLite {
+    rpc Query(SQLiteQueryString) returns (stream SQLiteQuery) {}
+}
+
+message SQLiteQueryString {
+    string sql = 1;
+}
+
+message SQLiteQuery {
+    repeated SQLiteField fields = 1;
+}
+
+message SQLiteField {
+    oneof value {
+        int32 int = 1;
+        int64 int64 = 2;
+        string string = 3;
+        bytes blog = 4;
+        float float = 5;
+    }
+}

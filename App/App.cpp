@@ -10,8 +10,11 @@
 
 #include "Utils.h"
 
+#pragma comment(lib, Dbghelp.lib)
+
 int main()
 {
+    
     auto dll = LoadLibrary(TEXT("Hook.dll"));
     if (!dll)
     {

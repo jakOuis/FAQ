@@ -23,6 +23,11 @@ std::wstring Utils::GetProcessName(DWORD pid)
     }
 }
 
+std::string Utils::PathBaseName(std::string path)
+{
+    return path.substr(path.find_last_of("/\\")  + 1);
+}
+
 std::vector<std::wstring> list_module_names()
 {
     std::vector<std::wstring> list;
@@ -65,6 +70,7 @@ void log(std::string text)
 
 static SOCKET SendSocket = INVALID_SOCKET;
 static sockaddr_in RecvAddr;
+static HANDLE LogMutex;
 
 void log(const char* str, size_t len)
 {
@@ -79,6 +85,8 @@ bool init_logger()
 
     if(SendSocket != INVALID_SOCKET)
         return true;
+
+    LogMutex = CreateMutex(nullptr, false, nullptr);
     
     int iResult;
     WSADATA wsaData;

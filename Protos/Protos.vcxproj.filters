@@ -21,39 +21,24 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header.h">
+    <ClInclude Include="faq_hook.grpc.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mutex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleHook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="rpc\faq_hook.pb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="rpc\faq_hook.grpc.pb.h">
+    <ClInclude Include="faq_hook.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="Protos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="faq_hook.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleHook.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mutex.cpp">
+    <ClCompile Include="faq_hook.grpc.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

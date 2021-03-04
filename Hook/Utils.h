@@ -6,7 +6,11 @@
 
 namespace Utils
 {
+
 std::wstring GetProcessName(DWORD pid);
+
+std::string PathBaseName(std::string path);
+
 }
 
 bool init_logger();
