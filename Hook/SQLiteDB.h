@@ -46,4 +46,5 @@ public:
     int open(const char* filename);
     void key(const void *key, int a3);
     void rekey(const void *key, int a3);
+    const char* db_filename(const char* dbName);
 };

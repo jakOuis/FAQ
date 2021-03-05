@@ -41,34 +41,46 @@ int main()
     }
     printf("Get hook_func (%p)", procAddr);
 
-    auto processInfo = get_process_info();
-    for(auto& p: processInfo)
+    while(true)
     {
-        if(p.second.processName != TEXT("TIM.exe") && p.second.processName != TEXT("QQ.exe"))
-            continue;
-        printf("[%ld] %ls: \n", p.second.pid, p.second.processName.c_str());
-
-        int count = 0;
-        for(auto & threadId : p.second.threads)
+        auto processInfo = get_process_info();
+        for(auto& p: processInfo)
         {
-            if(++count > 3)
+            if(p.second.processName != TEXT("TIM.exe") && p.second.processName != TEXT("QQ.exe"))
+                continue;
+            printf("[%ld] %ls: \n", p.second.pid, p.second.processName.c_str());
+
+            int count = 0;
+            for(auto & threadId : p.second.threads)
             {
-                printf("...\n");
-                break;
+                if(++count > 3)
+                {
+                    printf("...\n");
+                    break;
+                }
+                printf("\t%ld\n", threadId);
             }
-            printf("\t%ld\n", threadId);
         }
+        DWORD hookThread = 0;
+        
+        char buf[1024];
+        printf("Hook ThreadID>");
+        cin.getline(buf, sizeof(buf));
+        
+        if(strlen(buf) <= 0)
+            continue;
+        
+        sscanf_s(buf,  "%d", &hookThread);
+        auto hook = SetWindowsHookEx(WH_MSGFILTER, procAddr, dll, hookThread);
+        if (!hook)
+        {
+            print_error("Failed to set hook");
+            continue;
+        }
+        
+        break;
     }
-    DWORD hookThread = 0;
-    printf("Hook ThreadID >");
-    std::cin >> hookThread;
     
-    auto hook = SetWindowsHookEx(WH_MSGFILTER, procAddr, dll, hookThread);
-    if (!hook)
-    {
-        print_error("Failed to set hook");
-        return -1;
-    }
     printf("Hooked.\n");
 
     TCPClient client;
@@ -92,7 +104,7 @@ void sqlShell(TCPClient client)
         {
             cout << "sql>";
             cin.getline(buf, sizeof(buf));
-        } while(strlen(buf) > 0);
+        } while(strlen(buf) <= 0);
         
         auto sql = string(buf);
         if(!client.send(sql))

@@ -28,7 +28,14 @@ decltype(SQLite3DB_rekey)* OriginalSQLite3DB_rekey;
 void SQLite3DB_execQuery(void* self, int a2, char *sql, int *a4);
 decltype(SQLite3DB_execQuery)* OriginalSQLite3DB_execQuery;
 
+const char* SQLite3DB_db_filename(void* self, const char* dbName);
+decltype(SQLite3DB_db_filename)* OriginalSQLite3DB_db_filename;
+
 static Mutex<std::set<void*>> SQLite3DBPointers = Mutex<std::set<void*>>(std::set<void*>());
+
+static Mutex<bool> MsgDBFound = Mutex<bool>(false);
+
+void setupShell(HookSQLite3DB* db);
 
 
 void HookSQLite3DB::initHook(ModuleHook& hook)
@@ -71,6 +78,12 @@ void HookSQLite3DB::initHook(ModuleHook& hook)
         "?rekey@CppSQLite3DB@@QAEXPBXH@Z",
         (void**)&OriginalSQLite3DB_rekey,
         (void*&)frekey);
+        
+    auto dbName = &HookSQLite3DB::db_filename;
+    hook.hookFunc("SQLite3DB::db_name",
+        "?db_filename@CppSQLite3DB@@QAEPBDPBD@Z",
+        (void**)&OriginalSQLite3DB_db_filename,
+        (void*&)dbName);
 
     hook.commit();
 }
@@ -78,13 +91,8 @@ void HookSQLite3DB::initHook(ModuleHook& hook)
 
 int HookSQLite3DB::execDML(const char* sql, int* error)
 {
-    {
-        auto guard = SQLite3DBPointers.lock();
-        if (guard->find(this) != guard->end())
-        {
-            logFmt("Call to execDML %s", sql);
-        }
-    }
+    // logFmt("Call to execDML %s", sql);
+    
     int result;
     __asm {
         mov eax, error
@@ -97,18 +105,11 @@ int HookSQLite3DB::execDML(const char* sql, int* error)
         };
 
     return result;
-    // return OriginalSQLite3DB_execDML(this, sql, error);
 }
 
 int HookSQLite3DB::execQueryEx(int a2, char* sql, int* a4, int a5)
 {
-    {
-        auto guard = SQLite3DBPointers.lock();
-        if (guard->find(this) != guard->end())
-        {
-            logFmt("Call to execQueryEx %s", sql);
-        }
-    }
+    // logFmt("Call to execQueryEx %s", sql);
     int result;
     __asm {
         mov eax, a5
@@ -128,98 +129,27 @@ int HookSQLite3DB::execQueryEx(int a2, char* sql, int* a4, int a5)
 
 __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql, int* errOut)
 {
-    static bool queryed = false;
-
+    // logFmt("Call to execQuery %s", sql);
+    bool dbFound = false;
     {
-        auto guard = SQLite3DBPointers.lock();
-        if (guard->find(this) != guard->end())
+        auto guard = MsgDBFound.lock();
+        if(!*guard)
         {
-            logFmt("Call to execQuery %s", sql);
-            if (!queryed)
+            auto filename = this->db_filename("main");
+            auto basename = Utils::PathBaseName(std::string(filename));
+            logFmt("db_filename: %s", basename);
+            if (basename == "Msg3.0.db")
             {
-                queryed = true;
+                logFmt("Got Msg3.0.db");
 
-                SQLRpc service(this);
-                
-                logFmt("server start on 0.0.0.0:47382");
-                service.serve();
-
-                logFmt("Server down");
-
-                // HookSQLite3Query queryWrap = HookSQLite3Query();
-                // int err;
-                // auto result = this->execQuery(
-                //     queryWrap.innerPtr,
-                //     "SELECT * FROM 'group_665155905' ORDER BY Time DESC LIMIT 20;",
-                //     &err);
-                //
-                // logf("query out %d, return %d, query %p", err, result, &queryWrap.innerPtr);
-                // const uint8_t* valueBuf = nullptr;
-                // char formatBuffer[16384];
-                // bool firstLine = true;
-                // while (!queryWrap.eof())
-                // {
-                //     logf("!eof");
-                //     auto count = queryWrap.numFields();
-                //     logf("Nums of row: %d", count);
-                //     for (auto i = 0; i < count; i++)
-                //     {
-                //         auto type = queryWrap.fieldDataType(i);
-                //         auto name = queryWrap.fieldName(i);
-                //         switch (type)
-                //         {
-                //         case SQLITE_INTEGER:
-                //             logf("%s Int: %d", name, queryWrap.getIntField(i, -1));
-                //             break;
-                //         case SQLITE_FLOAT:
-                //             logf("%s Float: %lf", name, queryWrap.getFloatField(i, -1));
-                //             break;
-                //         case SQLITE_TEXT:
-                //             logf("%s String: %s", name, queryWrap.getStringField(i, "<?null>"));
-                //             break;
-                //         case SQLITE_BLOB:
-                //             {
-                //                 int size;
-                //                 valueBuf = queryWrap.getBlobField(i, &size);
-                //                 logf("%s Blob(%d)", name, size);
-                //                 // auto ptr = formatBuffer;
-                //                 // for(int j=0;j<size; j+= 4)
-                //                 // {
-                //                 //     unsigned int hex = *(int*)(valueBuf+ j);
-                //                 //     ptr += sprintf_s(ptr,
-                //                 //         16384 - (ptr - formatBuffer),
-                //                 //         "%02x%02x%02x%02x",
-                //                 //         (hex & 0xFF) >> 0,
-                //                 //         (hex & 0xFF00) >> 8,
-                //                 //         (hex & 0xFF0000) >> 16,
-                //                 //         (hex & 0xFF000000) >> 24);
-                //                 // }
-                //                 // log((const char*)valueBuf, size);
-                //                 // log(formatBuffer, size * 2);
-                //                 // valueBuf += 4 *8;
-                //                 // logf("%08x %08x %08x %08x  %08x %08x %08x %08x",
-                //                 //     ((int*)valueBuf)[0],((int*)valueBuf)[1],((int*)valueBuf)[2],((int*)valueBuf)[3],
-                //                 //     ((int*)valueBuf)[4],((int*)valueBuf)[5],((int*)valueBuf)[6],((int*)valueBuf)[7]);
-                //                 break;
-                //             }
-                //         case SQLITE_NULL:
-                //             logf("%s Null", name);
-                //             break;
-                //         default:
-                //             logf("%s Unknown type", name);
-                //         }
-                //     }
-                //     return 0;
-                //
-                //     // Sleep(1000);
-                //
-                //     queryWrap.nextRow();
-                // }
-                //
-                // return 0;
+                *guard = true;
+                dbFound = true;
             }
         }
     }
+    if(dbFound)
+        setupShell(this);
+    
     int result;
     __asm {
         mov eax, errOut
@@ -235,19 +165,21 @@ __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql,
     return result;
 }
 
+const char* HookSQLite3DB::db_filename(const char* dbName)
+{
+    const char* result;
+    __asm {
+        push dbName
+        mov ecx, this
+        call OriginalSQLite3DB_db_filename
+        mov result, eax
+    }
+    return result;
+}
+
+
 int HookSQLite3DB::open(const char* filename)
 {
-    logFmt("Call to open %s", filename);
-    auto basename = Utils::PathBaseName(std::string(filename));
-    if (basename == "Msg3.0.db")
-    {
-        logFmt("Got Msg3.0.db");
-        {
-            auto guard = SQLite3DBPointers.lock();
-            guard->insert(this);
-        }
-        logFmt("Added to collection");
-    }
     int result;
     __asm {
         mov eax, filename
@@ -262,12 +194,6 @@ int HookSQLite3DB::open(const char* filename)
 void HookSQLite3DB::key(const void* key, int a3)
 {
     logFmt("Call to key %p %x", key, a3);
-    {
-        auto guard = SQLite3DBPointers.lock();
-        if (guard->find(this) != guard->end())
-        {
-        }
-    }
     __asm {
         mov eax, a3
         push eax
@@ -281,12 +207,6 @@ void HookSQLite3DB::key(const void* key, int a3)
 void HookSQLite3DB::rekey(const void* key, int a3)
 {
     logFmt("Call to rekey %p %x", key, a3);
-    {
-        auto guard = SQLite3DBPointers.lock();
-        if (guard->find(this) != guard->end())
-        {
-        }
-    }
     __asm {
         mov eax, a3
         push eax
@@ -295,4 +215,15 @@ void HookSQLite3DB::rekey(const void* key, int a3)
         mov ecx, this
         call OriginalSQLite3DB_rekey
         }
+}
+
+
+void setupShell(HookSQLite3DB* db)
+{
+    SQLRpc service(db);
+                
+    logFmt("server start on 0.0.0.0:47382");
+    service.serve();
+
+    logFmt("Server down");
 }

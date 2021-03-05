@@ -19,7 +19,7 @@ public:
     
     T& operator* ()
     {
-        return *inner;
+        return inner;
     }
 private:
     HANDLE mutex;
