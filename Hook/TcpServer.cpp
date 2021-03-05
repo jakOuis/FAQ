@@ -114,6 +114,7 @@ bool TcpServer::sendAll(const char* buf, size_t len)
     while (len > 0)
     {
         auto size = send(buf, len);
+        // logFmt("send %d bytes", size);
         if (size == SOCKET_ERROR)
             return false;
         buf += size;

@@ -145,7 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="ClientRpc.cpp" />
+    <ClCompile Include="DBDump.cpp" />
     <ClCompile Include="TCPClient.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
@@ -156,7 +156,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClientRpc.h" />
+    <ClInclude Include="DBDump.h" />
     <ClInclude Include="TCPClient.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

@@ -1,6 +1,8 @@
 // App.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#define FAQ_PROTOS __declspec(dllimport)
+
 #include "TCPClient.h"
 #include <iostream>
 #include <cstdio>
@@ -12,8 +14,8 @@
 #include <grpcpp/impl/codegen/client_context.h>
 
 
-#define FAQ_PROTOS __declspec(dllimport)
 
+#include "DBDump.h"
 #include "faq_hook.grpc.pb.h"
 #include "faq_hook.pb.h"
 #include "Utils.h"
@@ -107,6 +109,43 @@ void sqlShell(TCPClient client)
         } while(strlen(buf) <= 0);
         
         auto sql = string(buf);
+        if(sql.find(".dump") == 0)
+        {
+            string filename;
+            for(auto i = sizeof(".dump"); i < sql.length();i++)
+            {
+                switch(sql[i])
+                {
+                    case ' ':
+                    case '\n':
+                    case '\r':
+                    case '\t':
+                    case '\f':
+                    case '\v':
+                        break;
+                    default:
+                        filename = sql.substr(i);
+                        goto End;
+                }
+            }
+            End:
+            if (filename != "")
+            {
+                printf("Dump into %s\n", filename.c_str());
+                auto dump = DBDump(client, filename);
+                try
+                {
+                    dump.dump();
+                    printf("Successfully dump into %s\n", filename.c_str());
+                }
+                catch(std::exception)
+                {
+                }
+            }
+            
+            continue;
+        }
+        
         if(!client.send(sql))
             return;
 
