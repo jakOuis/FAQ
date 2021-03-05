@@ -35,6 +35,8 @@ static Mutex<std::set<void*>> SQLite3DBPointers = Mutex<std::set<void*>>(std::se
 
 static Mutex<bool> MsgDBFound = Mutex<bool>(false);
 
+static std::unique_ptr<Mutex<bool>> DBLock;// = std::make_unique<Mutex<bool>>(false);
+
 void setupShell(HookSQLite3DB* db);
 
 
@@ -92,6 +94,8 @@ void HookSQLite3DB::initHook(ModuleHook& hook)
 int HookSQLite3DB::execDML(const char* sql, int* error)
 {
     // logFmt("Call to execDML %s", sql);
+    if(DBLock)
+        DBLock->lock();
     
     int result;
     __asm {
@@ -109,6 +113,8 @@ int HookSQLite3DB::execDML(const char* sql, int* error)
 
 int HookSQLite3DB::execQueryEx(int a2, char* sql, int* a4, int a5)
 {
+    if(DBLock)
+        DBLock->lock();
     // logFmt("Call to execQueryEx %s", sql);
     int result;
     __asm {
@@ -129,6 +135,8 @@ int HookSQLite3DB::execQueryEx(int a2, char* sql, int* a4, int a5)
 
 __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql, int* errOut)
 {
+    if(DBLock)
+        DBLock->lock();
     // logFmt("Call to execQuery %s", sql);
     bool dbFound = false;
     {
@@ -137,7 +145,7 @@ __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql,
         {
             auto filename = this->db_filename("main");
             auto basename = Utils::PathBaseName(std::string(filename));
-            logFmt("db_filename: %s", basename);
+            logFmt("db_filename: %s", basename.c_str());
             if (basename == "Msg3.0.db")
             {
                 logFmt("Got Msg3.0.db");
@@ -167,6 +175,8 @@ __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql,
 
 const char* HookSQLite3DB::db_filename(const char* dbName)
 {
+    if(DBLock)
+        DBLock->lock();
     const char* result;
     __asm {
         push dbName
@@ -180,6 +190,8 @@ const char* HookSQLite3DB::db_filename(const char* dbName)
 
 int HookSQLite3DB::open(const char* filename)
 {
+    if(DBLock)
+        DBLock->lock();
     int result;
     __asm {
         mov eax, filename
@@ -193,6 +205,8 @@ int HookSQLite3DB::open(const char* filename)
 
 void HookSQLite3DB::key(const void* key, int a3)
 {
+    if(DBLock)
+        DBLock->lock();
     logFmt("Call to key %p %x", key, a3);
     __asm {
         mov eax, a3
@@ -206,6 +220,8 @@ void HookSQLite3DB::key(const void* key, int a3)
 
 void HookSQLite3DB::rekey(const void* key, int a3)
 {
+    if(DBLock)
+        DBLock->lock();
     logFmt("Call to rekey %p %x", key, a3);
     __asm {
         mov eax, a3
@@ -220,6 +236,7 @@ void HookSQLite3DB::rekey(const void* key, int a3)
 
 void setupShell(HookSQLite3DB* db)
 {
+    // auto guard = DBLock->lock();
     SQLRpc service(db);
                 
     logFmt("server start on 0.0.0.0:47382");

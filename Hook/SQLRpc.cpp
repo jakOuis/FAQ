@@ -51,11 +51,11 @@ void SQLRpc::serve()
             logFmt("Wait for next query");
             if(!server.recv(sql))
                 break;
-            logFmt("Recv SQL: %s", sql.c_str());
+            // logFmt("Recv SQL: %s", sql.c_str());
 
             if(!query(sql))
                 break;
-            logFmt("Complete query");
+            // logFmt("Complete query");
         }
     }
     
@@ -72,7 +72,7 @@ bool SQLRpc::sendQueryRow(const faq::SQLiteQueryRow& row)
 
 bool SQLRpc::query(string sql)
 {
-    logFmt("Call to query");
+    // logFmt("Call to query");
 
     auto query = HookSQLite3Query();
     int result;
@@ -96,7 +96,7 @@ bool SQLRpc::query(string sql)
                 for(int i = 0; i < fieldCount; i ++)
                 {
                     auto name = query.fieldName(i);
-                    logFmt("[%d] Name %s", i, name);
+                    // logFmt("[%d] Name %s", i, name);
                     fieldNames.push_back(string(name));   
                 }
             }
@@ -110,7 +110,7 @@ bool SQLRpc::query(string sql)
                     resultField->set_name(fieldNames[idx]);
                 }
                 auto type = query.fieldDataType(idx);
-                logFmt("[%d] Type %d", idx, type);
+                // logFmt("[%d] Type %d", idx, type);
                 switch (type)
                 {
                     case SQLITE_INTEGER:

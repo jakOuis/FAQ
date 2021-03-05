@@ -152,7 +152,7 @@ bool TcpServer::recvUntil(char* buffer, size_t len)
         buffer += size;
         len -= size;
         total += size;
-        logFmt("Recv %d/%d", total, len);
+        // logFmt("Recv %d/%d", total, len);
     }
     return true;
 }
@@ -177,8 +177,8 @@ bool TcpServer::recv<std::string>(std::string& value)
     buf[size] = 0;
     value = std::string(buf, size);
     
-    logFmt("Recv string %s", value.c_str());
+    // logFmt("Recv string %s", value.c_str());
     free(buf);
-    logFmt("Free string %s", value.c_str());
+    // logFmt("Free string %s", value.c_str());
     return true;
 }

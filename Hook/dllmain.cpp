@@ -39,10 +39,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         log("dll process attach");
         break;
     case DLL_THREAD_ATTACH:
-        log("dll thread attach");
+        // log("dll thread attach");
         break;
     case DLL_THREAD_DETACH:
-        log("dll thread detach");
+        // log("dll thread detach");
         break;
     case DLL_PROCESS_DETACH:
         log("dll process detach");
