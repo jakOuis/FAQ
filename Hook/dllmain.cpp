@@ -4,7 +4,7 @@
 #include <psapi.h>
 
 #include "header.h"
-#include "Utils.h"
+
 #include <stdio.h>
 #include <winsock.h>
 #include <string>
@@ -16,6 +16,8 @@
 #include "Mutex.h"
 #include "SQLiteDB.h"
 #include "SQLiteQuery.h"
+#include "SQLRpc.h"
+#include "Utils.h"
 
 #pragma comment(lib,"ws2_32.lib") //Winsock Library
 #pragma comment(lib,"ntdll.lib") //Winsock Library
@@ -44,6 +46,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         break;
     case DLL_PROCESS_DETACH:
         log("dll process detach");
+        if(SQLRpc::Get())
+            SQLRpc::Get()->server.close();
+        if(ModuleHook::Get())
+            delete ModuleHook::Get();
         break;
     }
     
@@ -78,17 +84,17 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 DWORD WINAPI thread_func(LPVOID lpParam)
 {
     auto processName = Utils::GetProcessName(GetCurrentProcessId());
-    logf("%ls", processName.c_str());
+    logFmt("%ls", processName.c_str());
     if(processName != TEXT("QQ.exe") && processName != TEXT("TIM.exe"))
         return 0;
 
-    logf("start hook");
+    logFmt("start hook");
 
-    ModuleHook hook("KernelUtil.dll");
+    auto hook = new ModuleHook("KernelUtil.dll");
 
-    HookSQLite3DB::initHook(hook);
+    HookSQLite3DB::initHook(*hook);
 
-    HookSQLite3Query::initLib(hook.hMod);
+    HookSQLite3Query::initLib(hook->hMod);
 
     return 0;
 }

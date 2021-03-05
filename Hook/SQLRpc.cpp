@@ -18,25 +18,44 @@ struct FieldInfo
     int type;
 };
 
+SQLRpc* SQLRpc::_rpcInstance = nullptr;
+
+SQLRpc::SQLRpc(HookSQLite3DB* db): db(db), server("0.0.0.0", "47382")
+{
+    _rpcInstance = this;
+}
+
+SQLRpc::~SQLRpc()
+{
+    _rpcInstance = nullptr;
+}
+
+SQLRpc* SQLRpc::Get()
+{
+    return _rpcInstance;
+}
+
+
 void SQLRpc::serve()
 {
     if(!server.listen())
         return;
     while(true)
     {
-        server.waitClient();
+        if(!server.waitClient())
+            break;
 
         while(true)
         {
             string sql;
-            logf("Wait for next query");
+            logFmt("Wait for next query");
             if(!server.recv(sql))
                 break;
-            logf("Recv SQL: %s", sql.c_str());
+            logFmt("Recv SQL: %s", sql.c_str());
 
             if(!query(sql))
                 break;
-            logf("Complete query");
+            logFmt("Complete query");
         }
     }
     
@@ -53,7 +72,7 @@ bool SQLRpc::sendQueryRow(const faq::SQLiteQueryRow& row)
 
 bool SQLRpc::query(string sql)
 {
-    logf("Call to query");
+    logFmt("Call to query");
 
     auto query = HookSQLite3Query();
     int result;
@@ -62,8 +81,8 @@ bool SQLRpc::query(string sql)
     bool firstRow = true;
     vector<string> fieldNames;
 
-    logf("SQL: %s", sql.c_str());
-    logf("Result: %d", result);
+    logFmt("SQL: %s", sql.c_str());
+    logFmt("Result: %d", result);
     if(!server.send<int>(result))
         return false;
     if (result == SQLITE_ROW || result == SQLITE_OK)
@@ -77,7 +96,7 @@ bool SQLRpc::query(string sql)
                 for(int i = 0; i < fieldCount; i ++)
                 {
                     auto name = query.fieldName(i);
-                    logf("[%d] Name %s", i, name);
+                    logFmt("[%d] Name %s", i, name);
                     fieldNames.push_back(string(name));   
                 }
             }
@@ -91,7 +110,7 @@ bool SQLRpc::query(string sql)
                     resultField->set_name(fieldNames[idx]);
                 }
                 auto type = query.fieldDataType(idx);
-                logf("[%d] Type %d", idx, type);
+                logFmt("[%d] Type %d", idx, type);
                 switch (type)
                 {
                     case SQLITE_INTEGER:

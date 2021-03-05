@@ -82,7 +82,7 @@ int HookSQLite3DB::execDML(const char* sql, int* error)
         auto guard = SQLite3DBPointers.lock();
         if (guard->find(this) != guard->end())
         {
-            logf("Call to execDML %s", sql);
+            logFmt("Call to execDML %s", sql);
         }
     }
     int result;
@@ -106,7 +106,7 @@ int HookSQLite3DB::execQueryEx(int a2, char* sql, int* a4, int a5)
         auto guard = SQLite3DBPointers.lock();
         if (guard->find(this) != guard->end())
         {
-            logf("Call to execQueryEx %s", sql);
+            logFmt("Call to execQueryEx %s", sql);
         }
     }
     int result;
@@ -134,17 +134,17 @@ __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql,
         auto guard = SQLite3DBPointers.lock();
         if (guard->find(this) != guard->end())
         {
-            logf("Call to execQuery %s", sql);
+            logFmt("Call to execQuery %s", sql);
             if (!queryed)
             {
                 queryed = true;
 
                 SQLRpc service(this);
                 
-                logf("server start on 0.0.0.0:47382");
+                logFmt("server start on 0.0.0.0:47382");
                 service.serve();
 
-                logf("Server down");
+                logFmt("Server down");
 
                 // HookSQLite3Query queryWrap = HookSQLite3Query();
                 // int err;
@@ -237,16 +237,16 @@ __declspec(dllexport) int HookSQLite3DB::execQuery(void* query, const char* sql,
 
 int HookSQLite3DB::open(const char* filename)
 {
-    logf("Call to open %s", filename);
+    logFmt("Call to open %s", filename);
     auto basename = Utils::PathBaseName(std::string(filename));
     if (basename == "Msg3.0.db")
     {
-        logf("Got Msg3.0.db");
+        logFmt("Got Msg3.0.db");
         {
             auto guard = SQLite3DBPointers.lock();
             guard->insert(this);
         }
-        logf("Added to collection");
+        logFmt("Added to collection");
     }
     int result;
     __asm {
@@ -261,7 +261,7 @@ int HookSQLite3DB::open(const char* filename)
 
 void HookSQLite3DB::key(const void* key, int a3)
 {
-    logf("Call to key %p %x", key, a3);
+    logFmt("Call to key %p %x", key, a3);
     {
         auto guard = SQLite3DBPointers.lock();
         if (guard->find(this) != guard->end())
@@ -280,7 +280,7 @@ void HookSQLite3DB::key(const void* key, int a3)
 
 void HookSQLite3DB::rekey(const void* key, int a3)
 {
-    logf("Call to rekey %p %x", key, a3);
+    logFmt("Call to rekey %p %x", key, a3);
     {
         auto guard = SQLite3DBPointers.lock();
         if (guard->find(this) != guard->end())

@@ -65,7 +65,7 @@ std::vector<std::wstring> list_module_names()
 
 void log(std::string text)
 {
-    logf("%s", text.c_str());
+    logFmt("%s", text.c_str());
 }
 
 static SOCKET SendSocket = INVALID_SOCKET;

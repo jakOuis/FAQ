@@ -20,7 +20,7 @@ void log_error(const char* msg);
 
 std::vector<std::wstring> list_module_names();
 
-#define logf(...) \
+#define logFmt(...) \
 { \
     char buf[1024]; \
     sprintf_s(buf, sizeof(buf), __VA_ARGS__); \

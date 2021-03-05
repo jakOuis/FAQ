@@ -1,16 +1,21 @@
 #pragma once
 
+#include "TcpServer.h"
 #include "faq_hook.grpc.pb.h"
 #include "SQLiteDB.h"
-#include "TcpServer.h"
 
 class SQLRpc
 {
 public:
+    static SQLRpc* _rpcInstance;
+    
     HookSQLite3DB* db;
     TcpServer server;
-    SQLRpc(HookSQLite3DB* db): db(db), server("0.0.0.0", "47382"){}
+    SQLRpc(HookSQLite3DB* db);
+    ~SQLRpc();
     void serve();
     bool query(std::string sql);
     bool sendQueryRow(const faq::SQLiteQueryRow&  row);
+
+    static SQLRpc * Get();
 };

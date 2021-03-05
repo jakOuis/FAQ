@@ -17,10 +17,10 @@ public:
 
     bool connect(const char* hostname, const char* port);
 
-    size_t send(const char* buf, size_t len);
+    int send(const char* buf, size_t len);
     bool sendAll(const char* buf, size_t len);
 
-    size_t recv(char* buf, size_t len);
+    int recv(char* buf, size_t len);
     bool recvUntil(char* buf, size_t len);
     
     template<typename T>

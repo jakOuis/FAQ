@@ -1,6 +1,8 @@
 #pragma once
+#ifndef _WINSOCKAPI_
 #define _WINSOCKAPI_ 
 #include <WinSock2.h>
+#endif
 
 #include "Utils.h"
 
@@ -22,11 +24,13 @@ public:
 
     bool waitClient();
 
-    size_t send(const char* buf, size_t len);
+	void close();
+
+    int send(const char* buf, size_t len);
 
     bool sendAll(const char* buf, size_t len);
 
-    size_t recv(char* buffer, size_t len);
+    int recv(char* buffer, size_t len);
 
     bool recvUntil(char* buffer, size_t len);
 

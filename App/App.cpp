@@ -22,16 +22,17 @@
 
 using namespace std;
 
+void sqlShell(TCPClient client);
+
 int main()
 {
-    
     auto dll = LoadLibrary(TEXT("Hook.dll"));
     if (!dll)
     {
         print_error("Faied to load dll");
         return -1;
     }
-    printf("Load Hook.dll (%p)", dll);
+    printf("Load Hook.dll (%p)\n", dll);
     auto procAddr = (HOOKPROC)GetProcAddress(dll, "hook_func");
     if(!procAddr)
     {
@@ -71,26 +72,35 @@ int main()
     printf("Hooked.\n");
 
     TCPClient client;
-ReConnect:
-    do
+    while(true)
     {
-        printf("Connecting to hook sql server...\n");
-    } while(!client.connect("localhost", "47382"));
-    
-    char buf[1024];
-    cin.getline(buf, sizeof(buf));
+        do
+        {
+            printf("Connecting to hook sql server...\n");
+        } while(!client.connect("localhost", "47382"));
+        
+        sqlShell(client);
+    }
+}
 
+void sqlShell(TCPClient client)
+{
+    char buf[1024];
     while (true)
     {
-        cout << "sql >";
-        cin.getline(buf, sizeof(buf));
+        do
+        {
+            cout << "sql>";
+            cin.getline(buf, sizeof(buf));
+        } while(strlen(buf) > 0);
+        
         auto sql = string(buf);
         if(!client.send(sql))
-            goto ReConnect;
+            return;
 
         int result;
         if(!client.recv<int>(result))
-            goto ReConnect;
+            return;
 
         printf("Execute with result %d\n", result);
         
@@ -99,7 +109,7 @@ ReConnect:
         {
             string raw;
             if(!client.recv(raw))
-                goto ReConnect;
+                return;
             if(raw.size() == 0)
             {
                 printf("<EOF>\n");
@@ -114,7 +124,17 @@ ReConnect:
             {
                 for(auto& field :row.fields())
                 {
-                    printf("%16s, ", field.name().c_str());
+                    printf("%16s ", field.name().c_str());
+                }
+                printf("\n");
+                
+                for(auto& field :row.fields())
+                {
+                    for(auto i = 0; i < 16; i++)
+                    {
+                        printf("-");
+                    }
+                    printf(" ");
                 }
                 printf("\n");
             }
@@ -125,27 +145,27 @@ ReConnect:
                 switch(field.value_case())
                 {
                     case faq::SQLiteField::kNull:
-                        printf("%16s, ", field.null() ? "NULL": "UNKNOWN");
+                        printf("%16s ", field.null() ? "NULL": "UNKNOWN");
                         break;
                     case faq::SQLiteField::kInt:
-                        printf("%16d, ", field.int_());
+                        printf("%16d ", field.int_());
                         break;
                     case faq::SQLiteField::kInt64:
-                        printf("%16lld, ", field.int64());
+                        printf("%16lld ", field.int64());
                         break;
                     case faq::SQLiteField::kFloat:
-                        printf("%16lf, ", field.float_());
+                        printf("%16lf ", field.float_());
                         break;
                     case faq::SQLiteField::kString:
-                        printf("%16s, ", field.string().c_str());
+                        printf("%16s ", field.string().c_str());
                         break;
                     case faq::SQLiteField::kBlob:
                         length = sprintf_s(formatBuf, sizeof(formatBuf), "Blob(%d)", field.blob().size());
                         formatBuf[length] = 0;
-                        printf("%16s, ", formatBuf);
+                        printf("%16s ", formatBuf);
                         break;
                 case faq::SQLiteField::VALUE_NOT_SET:
-                    printf("%16s, ", "NOT_SET");
+                    printf("%16s ", "NOT_SET");
                     break;
                 }
             }
@@ -155,4 +175,5 @@ ReConnect:
         }
     }
 }
+
 

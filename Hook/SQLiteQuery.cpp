@@ -17,17 +17,17 @@ void* SQLite3Query_getStringField;
 
 __declspec(dllexport) void HookSQLite3Query::initLib(HMODULE hMod)
 {
-    logf("get %p", SQLite3Query_eof = GetProcAddress(hMod, "?eof@CppSQLite3Query@@QAE_NXZ"));
-    logf("get %p", SQLite3Query_fieldName = GetProcAddress(hMod, "?fieldName@CppSQLite3Query@@QAEPBDH@Z"));
-    logf("get %p", SQLite3Query_fieldIsNull = GetProcAddress(hMod, "?fieldIsNull@CppSQLite3Query@@QAE_NH@Z"));
-    logf("get %p", SQLite3Query_nextRow = GetProcAddress(hMod, "?nextRow@CppSQLite3Query@@QAEXXZ"));
-    logf("get %p", SQLite3Query_numFields = GetProcAddress(hMod, "?numFields@CppSQLite3Query@@QAEHXZ"));
-    logf("get %p", SQLite3Query_fieldDataType = GetProcAddress(hMod, "?fieldDataType@CppSQLite3Query@@QAEHH@Z"));
-    logf("get %p", SQLite3Query_getBlobField = GetProcAddress(hMod, "?getBlobField@CppSQLite3Query@@QAEPBEHAAH@Z"));
-    logf("get %p", SQLite3Query_getFloatField = GetProcAddress(hMod, "?getFloatField@CppSQLite3Query@@QAENHN@Z"));
-    logf("get %p", SQLite3Query_getInt64Field = GetProcAddress(hMod, "?getInt64Field@CppSQLite3Query@@QAE_JH_J@Z"));
-    logf("get %p", SQLite3Query_getIntField = GetProcAddress(hMod, "?getIntField@CppSQLite3Query@@QAEHHH@Z"));
-    logf("get %p", SQLite3Query_getStringField = GetProcAddress(hMod, "?getStringField@CppSQLite3Query@@QAEPBDHPBD@Z"));
+    logFmt("get %p", SQLite3Query_eof = GetProcAddress(hMod, "?eof@CppSQLite3Query@@QAE_NXZ"));
+    logFmt("get %p", SQLite3Query_fieldName = GetProcAddress(hMod, "?fieldName@CppSQLite3Query@@QAEPBDH@Z"));
+    logFmt("get %p", SQLite3Query_fieldIsNull = GetProcAddress(hMod, "?fieldIsNull@CppSQLite3Query@@QAE_NH@Z"));
+    logFmt("get %p", SQLite3Query_nextRow = GetProcAddress(hMod, "?nextRow@CppSQLite3Query@@QAEXXZ"));
+    logFmt("get %p", SQLite3Query_numFields = GetProcAddress(hMod, "?numFields@CppSQLite3Query@@QAEHXZ"));
+    logFmt("get %p", SQLite3Query_fieldDataType = GetProcAddress(hMod, "?fieldDataType@CppSQLite3Query@@QAEHH@Z"));
+    logFmt("get %p", SQLite3Query_getBlobField = GetProcAddress(hMod, "?getBlobField@CppSQLite3Query@@QAEPBEHAAH@Z"));
+    logFmt("get %p", SQLite3Query_getFloatField = GetProcAddress(hMod, "?getFloatField@CppSQLite3Query@@QAENHN@Z"));
+    logFmt("get %p", SQLite3Query_getInt64Field = GetProcAddress(hMod, "?getInt64Field@CppSQLite3Query@@QAE_JH_J@Z"));
+    logFmt("get %p", SQLite3Query_getIntField = GetProcAddress(hMod, "?getIntField@CppSQLite3Query@@QAEHHH@Z"));
+    logFmt("get %p", SQLite3Query_getStringField = GetProcAddress(hMod, "?getStringField@CppSQLite3Query@@QAEPBDHPBD@Z"));
 }
 
 // Will link with _malloc in DetoursNT.cpp

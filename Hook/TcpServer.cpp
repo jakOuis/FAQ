@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "TcpServer.h"
+#include "Utils.h"
 
 
 auto _send = send;
@@ -19,7 +20,7 @@ bool TcpServer::listen()
 
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
-        logf("WSAStartup failed with error: %d\n", iResult);
+        logFmt("WSAStartup failed with error: %d\n", iResult);
         return false;
     }
 
@@ -32,7 +33,7 @@ bool TcpServer::listen()
     // Resolve the server address and port
     iResult = getaddrinfo(addr.c_str(), port.c_str(), &hints, &serverAddr);
     if (iResult != 0) {
-        logf("getaddrinfo failed with error: %d\n", iResult);
+        logFmt("getaddrinfo failed with error: %d\n", iResult);
         WSACleanup();
         return false;
     }
@@ -40,7 +41,7 @@ bool TcpServer::listen()
     // Create a SOCKET for connecting to server
     serverSocket = socket(serverAddr->ai_family, serverAddr->ai_socktype, serverAddr->ai_protocol);
     if (serverSocket == INVALID_SOCKET) {
-        logf("socket failed with error: %ld\n", WSAGetLastError());
+        logFmt("socket failed with error: %ld\n", WSAGetLastError());
         freeaddrinfo(serverAddr);
         WSACleanup();
         return false;
@@ -53,7 +54,7 @@ bool TcpServer::listen()
     // Setup the TCP listening socket
     iResult = bind(serverSocket, serverAddr->ai_addr, (int)serverAddr->ai_addrlen);
     if (iResult == SOCKET_ERROR) {
-        logf("bind failed with error: %d\n", WSAGetLastError());
+        logFmt("bind failed with error: %d\n", WSAGetLastError());
         freeaddrinfo(serverAddr);
         closesocket(serverSocket);
         WSACleanup();
@@ -64,7 +65,7 @@ bool TcpServer::listen()
 
     iResult = _listen(serverSocket, SOMAXCONN);
     if (iResult == SOCKET_ERROR) {
-        logf("listen failed with error: %d\n", WSAGetLastError());
+        logFmt("listen failed with error: %d\n", WSAGetLastError());
         closesocket(serverSocket);
         WSACleanup();
         return false;
@@ -82,7 +83,7 @@ bool TcpServer::waitClient()
     ioctlsocket(clientSocket, FIONBIO, &iMode);
     
     if (clientSocket == INVALID_SOCKET) {
-        logf("accept failed with error: %d\n", WSAGetLastError());
+        logFmt("accept failed with error: %d\n", WSAGetLastError());
         closesocket(serverSocket);
         WSACleanup();
         return false;
@@ -90,12 +91,19 @@ bool TcpServer::waitClient()
     return true;
 }
 
-size_t TcpServer::send(const char* buf, size_t len)
+void TcpServer::close()
+{
+    closesocket(serverSocket);
+    closesocket(clientSocket);
+}
+
+
+int TcpServer::send(const char* buf, size_t len)
 {
     auto size = _send(clientSocket, buf, len, 0);
     if (size == SOCKET_ERROR)
     {
-        logf("send failed with error: %d\n", WSAGetLastError());
+        logFmt("send failed with error: %d\n", WSAGetLastError());
         closesocket(clientSocket);
     }
     return size;
@@ -114,19 +122,19 @@ bool TcpServer::sendAll(const char* buf, size_t len)
     return true;
 }
 
-size_t TcpServer::recv(char* buffer, size_t len)
+int TcpServer::recv(char* buffer, size_t len)
 {
     int result = _recv(clientSocket, buffer, len, 0);
     if (result > 0) {
-        logf("Bytes received: %d\n", result);
+        logFmt("Bytes received: %d\n", result);
     }
     else if (result == 0)
     {
-        logf("Connection closing...");
+        logFmt("Connection closing...");
     }
     else if (result == SOCKET_ERROR)
     {
-        logf("recv failed with error: %d", WSAGetLastError());
+        logFmt("recv failed with error: %d", WSAGetLastError());
         closesocket(clientSocket);
         WSACleanup();
     }
@@ -144,7 +152,7 @@ bool TcpServer::recvUntil(char* buffer, size_t len)
         buffer += size;
         len -= size;
         total += size;
-        logf("Recv %d/%d", total, len);
+        logFmt("Recv %d/%d", total, len);
     }
     return true;
 }
@@ -169,8 +177,8 @@ bool TcpServer::recv<std::string>(std::string& value)
     buf[size] = 0;
     value = std::string(buf, size);
     
-    logf("Recv string %s", value.c_str());
+    logFmt("Recv string %s", value.c_str());
     free(buf);
-    logf("Free string %s", value.c_str());
+    logFmt("Free string %s", value.c_str());
     return true;
 }

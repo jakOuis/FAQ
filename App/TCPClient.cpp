@@ -79,7 +79,7 @@ bool TCPClient::connect(const char* hostname, const char* port)
 }
 
 
-size_t TCPClient::send(const char* buf, size_t len)
+int TCPClient::send(const char* buf, size_t len)
 {
     auto size = _send(socket, buf, len, 0);
     if (size == SOCKET_ERROR)
@@ -103,7 +103,7 @@ bool TCPClient::sendAll(const char* buf, size_t len)
     return true;
 }
 
-size_t TCPClient::recv(char* buffer, size_t len)
+int TCPClient::recv(char* buffer, size_t len)
 {
     int result = _recv(socket, buffer, len, 0);
     if (result > 0) {

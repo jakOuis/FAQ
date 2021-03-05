@@ -1,18 +1,43 @@
 #include "pch.h"
 #include "ModuleHook.h"
 
-#include "Utils.h"
 #include <detours.h>
+#include "Utils.h"
+
+ModuleHook* ModuleHook::_modHookInstance;
 
 ModuleHook::ModuleHook(const char* moduleName)
 {
     hMod = GetModuleHandleA("KernelUtil.dll");
-    logf("Get Module %s at %p", moduleName, hMod);
+    logFmt("Get Module %s at %p", moduleName, hMod);
     if(hMod == nullptr)
     {
         log_error("Invalid HMODULE");
     }
+    _modHookInstance = this;
 }
+ModuleHook::~ModuleHook()
+{
+    DetourTransactionBegin();
+
+    for(auto& hook : hooks)
+    {
+        DetourDetach(hook.originalFuncPtr, hook.hookFunc);
+    }
+
+    DetourTransactionCommit();
+
+    logFmt("Detached hooks");
+    
+    _modHookInstance = nullptr;
+}
+
+ModuleHook* ModuleHook::Get()
+{
+    return _modHookInstance;
+}
+
+
 
 void ModuleHook::begin()
 {
@@ -24,54 +49,61 @@ void ModuleHook::commit()
     const auto err = DetourTransactionCommit();
     if(err != NO_ERROR)
     {
-        logf("Failed to commit detour");
+        logFmt("Failed to commit detour");
         switch(err)
         {
         case ERROR_INVALID_DATA:
-            logf("ERROR_INVALID_DATA");
+            logFmt("ERROR_INVALID_DATA");
             break;
         case ERROR_INVALID_OPERATION:
-            logf("ERROR_INVALID_OPERATION");
+            logFmt("ERROR_INVALID_OPERATION");
             break;
         default:
-            logf("Unknown error: %d", err);
+            logFmt("Unknown error: %d", err);
         }
     }
-    logf("Detour transaction successfully committed");
+    logFmt("Detour transaction successfully committed");
 }
 
 void ModuleHook::hookFunc(const char* logName, const char* name, PVOID* originalFunc, void* hookFunc)
 {
     auto funcAddr = GetProcAddress(hMod, name);
-    logf("%s: %p", logName, funcAddr);
+    logFmt("%s: %p", logName, funcAddr);
     if(funcAddr == NULL)
     {
-        logf("Get null of function %s", name);
+        logFmt("Get null of function %s", name);
     }
 
     DetourTransactionBegin();
-    logf("Try hook %s", logName);
+    logFmt("Try hook %s", logName);
     *originalFunc = (void*)funcAddr;
     auto err = DetourAttach(originalFunc, hookFunc);
     if(err != NO_ERROR)
     {
-        logf("Failed to detour");
+        logFmt("Failed to detour");
         switch(err)
         {
         case ERROR_INVALID_BLOCK:
-            logf("ERROR_INVALID_BLOCK");
+            logFmt("ERROR_INVALID_BLOCK");
             break;
         case ERROR_INVALID_HANDLE:
-            logf("ERROR_INVALID_HANDLE");
+            logFmt("ERROR_INVALID_HANDLE");
             break;
         case ERROR_INVALID_OPERATION:
-            logf("ERROR_INVALID_OPERATION");
+            logFmt("ERROR_INVALID_OPERATION");
             break;
         case ERROR_NOT_ENOUGH_MEMORY:
-            logf("ERROR_NOT_ENOUGH_MEMORY");
+            logFmt("ERROR_NOT_ENOUGH_MEMORY");
             break;
         default:
-            logf("Unknown error: %d", err);
+            logFmt("Unknown error: %d", err);
         }
+    }
+    else
+    {
+        hooks.push_back({
+            originalFunc,
+            hookFunc
+        });
     }
 }
