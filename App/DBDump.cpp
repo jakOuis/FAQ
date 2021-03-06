@@ -28,6 +28,11 @@ void DBDump::dump()
         while (auto row = nextRow())
         {
             auto sql  = row->fields(1).string();
+            auto index = sql.find(", primary key");
+            if(index != string::npos)
+                sql = sql.substr(0, index) + ")";
+            printf("%s\n", sql.c_str());
+            
             auto name = row->fields(0).string();
             if (!db.tableExists(name))
             {
@@ -69,7 +74,7 @@ void DBDump::dump()
             unique_ptr<SQLite::Statement> statement;
             bool firstRow = true;
             
-            const int LIMIT = 100;
+            const int LIMIT = 10000;
             for (auto skip = 0; skip < total; skip += LIMIT)
             {
                 printf("%d/%d\n", skip, total);

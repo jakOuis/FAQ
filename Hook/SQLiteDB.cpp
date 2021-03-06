@@ -31,11 +31,14 @@ decltype(SQLite3DB_execQuery)* OriginalSQLite3DB_execQuery;
 const char* SQLite3DB_db_filename(void* self, const char* dbName);
 decltype(SQLite3DB_db_filename)* OriginalSQLite3DB_db_filename;
 
+void SQLite3DB_close(void* self);
+decltype(SQLite3DB_close)* OriginalSQLite3DB_close;
+
 static Mutex<std::set<void*>> SQLite3DBPointers = Mutex<std::set<void*>>(std::set<void*>());
 
 static Mutex<bool> MsgDBFound = Mutex<bool>(false);
 
-static std::unique_ptr<Mutex<bool>> DBLock;// = std::make_unique<Mutex<bool>>(false);
+static std::unique_ptr<Mutex<bool>> DBLock = std::make_unique<Mutex<bool>>(false);
 
 void setupShell(HookSQLite3DB* db);
 
@@ -86,6 +89,12 @@ void HookSQLite3DB::initHook(ModuleHook& hook)
         "?db_filename@CppSQLite3DB@@QAEPBDPBD@Z",
         (void**)&OriginalSQLite3DB_db_filename,
         (void*&)dbName);
+
+    auto close = &HookSQLite3DB::close;
+    hook.hookFunc("SQLite3DB::close",
+        "?close@CppSQLite3DB@@QAEXXZ",
+        (void**)&OriginalSQLite3DB_close,
+        (void*&)close);
 
     hook.commit();
 }
@@ -233,10 +242,26 @@ void HookSQLite3DB::rekey(const void* key, int a3)
         }
 }
 
+void HookSQLite3DB::close()
+{
+    auto filename = this->db_filename("main");
+    auto basename = Utils::PathBaseName(std::string(filename));
+    if(basename == "Msg3.0.db")
+    {
+        logFmt("Attempt to close msg db.");
+        DBLock->lock();
+    }
+    __asm {
+        mov ecx, this
+        call OriginalSQLite3DB_close
+    }
+}
+
+
 
 void setupShell(HookSQLite3DB* db)
 {
-    // auto guard = DBLock->lock();
+    auto guard = DBLock->lock();
     SQLRpc service(db);
                 
     logFmt("server start on 0.0.0.0:47382");
